@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Party Guide</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <p class="login-logo">●</p>
+      <p class="login-subtitle">Party Guide</p>
+      <div class="login-field-wrap">
+        <input
+          class="login-input"
+          id="passwordInput"
+          type="password"
+          placeholder="Enter password"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <p class="login-error" id="loginError" hidden>Incorrect password. Try again.</p>
+      <button class="btn btn--accent btn--lg" id="verifyBtn">Verify</button>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <button class="action-btn" id="actionBtn">Chat</button>
+    <h1 class="logo">Party Guide</h1>
+    <span class="spacer"></span>
+  </header>
+
+  <main class="main-menu" id="mainMenu">
+    <button class="zone-btn" data-region="haadRin">Haad Rin</button>
+    <button class="zone-btn" data-region="haadYao">Haad Yao</button>
+    <button class="zone-btn" data-region="mixedTour">Mixed Tour</button>
+  </main>
+
+  <div class="dropdown-backdrop" id="dropdownBackdrop" hidden></div>
+
+  <div class="dropdown-sheet" id="dropdownSheet" hidden>
+    <p class="dropdown-label" id="dropdownLabel">Select your route</p>
+    <div class="dropdown-grid" id="dropdownGrid">
+      </div>
+  </div>
+
+  <div class="dropdown-backdrop" id="chatBackdrop" hidden></div>
+
+  <div class="dropdown-sheet" id="chatSheet" hidden>
+    <div class="chat-header">
+      <p class="dropdown-label">Send a message</p>
+      <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close chat">✕</button>
+    </div>
+
+    <div id="chatInputState">
+      <textarea
+        class="chat-textarea"
+        id="chatTextarea"
+        placeholder="Type your message here…"
+        rows="4"
+        autocorrect="off"
+        spellcheck="false"
+      ></textarea>
+      <p class="chat-hint">Your message goes directly to the team.</p>
+      <button class="btn btn--accent btn--lg" id="chatSendBtn">Send Message</button>
+    </div>
+
+    <div id="chatConfirmState" hidden>
+      <div class="chat-confirm">
+        <p class="chat-confirm-icon">✅</p>
+        <p class="chat-confirm-title">Message sent!</p>
+        <p class="chat-confirm-body">
+          Your message has been received. There may be a short delay before you get a reply — thanks for your patience.
+        </p>
+        <button class="btn btn--accent btn--lg" id="chatSendAnotherBtn">Send Another</button>
+        <button class="btn btn--ghost btn--lg" id="chatDoneBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="spot-list-wrapper" id="spotListWrapper" hidden>
+    <p class="list-context" id="listContext"></p>
+    <ul class="spot-list" id="spotList"></ul>
+  </div>
+
+  <script src="data/spots.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
