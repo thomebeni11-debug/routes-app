@@ -1,12 +1,12 @@
 /* =====================================================
-   PARTY GUIDE  –  app.js (UPDATED: AUTO-GROUPS & PHOTO PROOF)
+   PARTY GUIDE  –  app.js (UPDATED: AUTOMATIC SKIP TELEGRAM NOTIFICATION)
    =====================================================
    Reads config + data from data/spots.js (loaded first).
    Controls three views:
      1. Login screen   – password gate
      2. Main menu      – 3 zone tiles (Trigger Auto-Group)
      3. Spot list      – accordion for a region + route + Photo Proof
-   Plus two overlays:
+   Plus overlays:
      4. Route dropdown – bottom sheet
      5. Chat panel     – Telegram message sender
 ===================================================== */
@@ -21,6 +21,29 @@ const loginScreen   = document.getElementById("loginScreen");
 const passwordInput = document.getElementById("passwordInput");
 const verifyBtn     = document.getElementById("verifyBtn");
 const loginError    = document.getElementById("loginError");
+
+// PROGRESS RESTORE ELEMENTS
+const restoreBackdrop     = document.getElementById("restoreBackdrop");
+const restoreSheet        = document.getElementById("restoreSheet");
+const restoreContinueBtn = document.getElementById("restoreContinueBtn");
+const restoreRestartBtn  = document.getElementById("restoreRestartBtn");
+
+const confirmRestartBackdrop = document.getElementById("confirmRestartBackdrop");
+const confirmRestartSheet    = document.getElementById("confirmRestartSheet");
+const finalRestartBtn        = document.getElementById("finalRestartBtn");
+const cancelRestartBtn       = document.getElementById("cancelRestartBtn");
+
+// FLEXIBLE NAVIGATION SKIP WARNING ELEMENTS
+const skipWarningBackdrop = document.getElementById("skipWarningBackdrop");
+const skipWarningSheet    = document.getElementById("skipWarningSheet");
+const skipWarningMessage  = document.getElementById("skipWarningMessage");
+const skipContinueBtn     = document.getElementById("skipContinueBtn");
+const skipCancelBtn       = document.getElementById("skipCancelBtn");
+
+// SKIP REASON ELEMENTS
+const skipReasonBackdrop  = document.getElementById("skipReasonBackdrop");
+const skipReasonSheet     = document.getElementById("skipReasonSheet");
+const skipReasonCancelBtn = document.getElementById("skipReasonCancelBtn");
 
 // Header
 const actionBtn     = document.getElementById("actionBtn");
@@ -57,7 +80,12 @@ let currentRegion = null;
 let currentRoute  = null;
 let currentSpots  = [];
 let currentIndex  = 0;
-let photoUploadedForCurrentSpot = false; // Foto-Sperre Status
+let photoUploadedForCurrentSpot = false; 
+
+// Tracks detailed progress strings: "open", "completed", or "skipped"
+let uploadedSpotsMap = []; 
+// Map to store the string reason for skipped spots, ready for Telegram pipelines
+let skipReasonsMap = [];
 
 /* ─────────────────────────────────────────────────────
    AUTOMATIC GROUP & EMOJI MAPPING
@@ -68,19 +96,115 @@ const REGION_LABELS = {
   mixedTour: "Mixed Tour"
 };
 
-// Automatische Zuweisung der Gruppennamen
 const REGION_GROUPS = {
   haadRin:   "Gruppe A",
   haadYao:   "Gruppe B",
   mixedTour: "Gruppe C"
 };
 
-// Automatische Farb-Emojis für den Chef
 const REGION_EMOJIS = {
   haadRin:   "🟠🟠",
   haadYao:   "🔵🔵",
   mixedTour: "🔴🔴"
 };
+
+/* PERSISTENCE SYSTEM (LOCAL STORAGE)
+   Saves route progress for up to 4 hours.
+───────────────────────────────────────────────────── */
+const STORAGE_KEY = "party_guide_progress";
+const MAX_PROGRESS_AGE = 4 * 60 * 60 * 1000; 
+
+function saveRouteProgress() {
+  if (!currentRegion || !currentRoute) return;
+  
+  const progressData = {
+    currentRegion,
+    currentRoute,
+    currentIndex,
+    photoUploadedForCurrentSpot,
+    uploadedSpotsMap, 
+    skipReasonsMap, 
+    timestamp: Date.now()
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+}
+
+function clearRouteProgress() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function checkAndPromptProgress() {
+  const rawData = localStorage.getItem(STORAGE_KEY);
+  if (!rawData) return;
+
+  try {
+    const progress = JSON.parse(rawData);
+    
+    if (Date.now() - progress.timestamp > MAX_PROGRESS_AGE) {
+      clearRouteProgress();
+      return;
+    }
+
+    restoreBackdrop.hidden = false;
+    restoreSheet.hidden = false;
+  } catch (e) {
+    console.error("Error parsing stored progress", e);
+    clearRouteProgress();
+  }
+}
+
+// Bind Persistence Dialog Listeners
+(function initRestoreListeners() {
+  restoreContinueBtn.addEventListener("click", () => {
+    const progress = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (progress) {
+      currentRegion = progress.currentRegion;
+      currentRoute = progress.currentRoute;
+      currentIndex = progress.currentIndex;
+      photoUploadedForCurrentSpot = progress.photoUploadedForCurrentSpot;
+      uploadedSpotsMap = progress.uploadedSpotsMap || []; 
+      skipReasonsMap = progress.skipReasonsMap || []; 
+
+      const regionData = spotsData[currentRegion];
+      currentSpots = (regionData && regionData.routes[currentRoute]) || [];
+      
+      const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
+        .find((o) => o.key === currentRoute)?.label || currentRoute;
+      const currentGroup = REGION_GROUPS[currentRegion] || "";
+      
+      listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
+
+      renderList();
+      showSpotList();
+      
+      requestAnimationFrame(() => {
+        spotList.querySelector(".spot-item.is-active")?.scrollIntoView({ block: "start" });
+      });
+    }
+    restoreBackdrop.hidden = true;
+    restoreSheet.hidden = true;
+  });
+
+  restoreRestartBtn.addEventListener("click", () => {
+    confirmRestartBackdrop.hidden = false;
+    confirmRestartSheet.hidden = false;
+  });
+
+  finalRestartBtn.addEventListener("click", () => {
+    clearRouteProgress();
+    confirmRestartBackdrop.hidden = true;
+    confirmRestartSheet.hidden = true;
+    restoreBackdrop.hidden = true;
+    restoreSheet.hidden = true;
+  });
+
+  cancelRestartBtn.addEventListener("click", () => {
+    confirmRestartBackdrop.hidden = true;
+    confirmRestartSheet.hidden = true;
+  });
+})();
+/* ───────────────────────────────────────────────────── */
+
 
 /* =====================================================
    1. PASSWORD GATE
@@ -90,7 +214,10 @@ const REGION_EMOJIS = {
     if (passwordInput.value === APP_PASSWORD) {
       loginScreen.style.transition = "opacity 0.3s ease";
       loginScreen.style.opacity = "0";
-      setTimeout(() => { loginScreen.hidden = true; }, 320);
+      setTimeout(() => { 
+        loginScreen.hidden = true; 
+        checkAndPromptProgress(); 
+      }, 320);
     } else {
       loginError.hidden = false;
       passwordInput.value = "";
@@ -111,7 +238,6 @@ const REGION_EMOJIS = {
    2. VIEW MANAGEMENT & DYNAMIC CSS THEMING
 ===================================================== */
 function updateAppTheme(regionKey) {
-  // Entfernt alte Klassen vom body, damit CSS umschalten kann
   document.body.classList.remove("route-haadRin", "route-haadYao", "route-mixedTour");
   if (regionKey) {
     document.body.classList.add(`route-${regionKey}`);
@@ -122,14 +248,14 @@ function showMainMenu() {
   mainMenu.hidden        = false;
   spotListWrapper.hidden = true;
   setActionMode("chat");
-  updateAppTheme(null); // Farb-Reset im Hauptmenü
+  updateAppTheme(null); 
 }
 
 function showSpotList() {
   mainMenu.hidden        = true;
   spotListWrapper.hidden = false;
   setActionMode("back");
-  updateAppTheme(currentRegion); // CSS-Farbe aktivieren
+  updateAppTheme(currentRegion); 
 }
 
 function setActionMode(mode) {
@@ -151,7 +277,10 @@ actionBtn.addEventListener("click", () => {
     currentRoute  = null;
     currentSpots  = [];
     currentIndex  = 0;
+    uploadedSpotsMap = [];
+    skipReasonsMap = [];
     spotList.innerHTML = "";
+    clearRouteProgress(); 
     showMainMenu();
   } else {
     openChat();
@@ -207,15 +336,18 @@ function loadRoute() {
   const regionData = spotsData[currentRegion];
   currentSpots = (regionData && regionData.routes[currentRoute]) || [];
   currentIndex = 0;
-  photoUploadedForCurrentSpot = false; // Reset für neuen Routenstart
+  photoUploadedForCurrentSpot = false; 
+  
+  uploadedSpotsMap = new Array(currentSpots.length).fill("open");
+  skipReasonsMap = new Array(currentSpots.length).fill("");
 
   const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
     .find((o) => o.key === currentRoute)?.label || currentRoute;
   
-  // Zeigt dem Volunteer oben die automatische Gruppe an, z.B. "Haad Rin · Full Day (Gruppe A)"
   const currentGroup = REGION_GROUPS[currentRegion] || "";
   listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
 
+  saveRouteProgress(); 
   renderList();
   showSpotList();
   spotListWrapper.scrollTop = 0;
@@ -257,10 +389,19 @@ function renderList() {
 
 /* ── HTML builders ───────────────────────────────── */
 function buildCollapsedHTML(spot, index) {
+  let statusIndicator = "";
+  if (spot.isBreak) {
+    statusIndicator = "";
+  } else if (uploadedSpotsMap[index] === "completed") {
+    statusIndicator = " ✓";
+  } else if (uploadedSpotsMap[index] === "skipped") {
+    statusIndicator = " [Skipped]";
+  }
+  
   return `
     <div class="spot-header" role="button" aria-label="Jump to spot ${index + 1}">
       <span class="spot-index">${index + 1}</span>
-      <span class="spot-title">${escapeHTML(spot.name)}</span>
+      <span class="spot-title">${escapeHTML(spot.name)}${statusIndicator}</span>
     </div>`;
 }
 
@@ -270,27 +411,40 @@ function buildActiveHTML(spot, index) {
   const hasMap  = !spot.isBreak && spot.mapsLink && !spot.mapsLink.startsWith("PLACEHOLDER");
 
   const navigateBtn = hasMap ? `
-    <a class="btn btn--accent btn--lg" href="${spot.mapsLink}" target="_blank" rel="noopener">
+    <button class="btn btn--accent btn--lg" data-action="navigate-check" data-url="${spot.mapsLink}">
       📍 Navigate
-    </a>` : "";
+    </button>` : "";
 
   const prevBtn = `
     <button class="btn btn--ghost" data-action="prev" ${isFirst ? "disabled" : ""}>
       ← Prev
     </button>`;
 
-  // Foto-Sicherungssystem einbetten (Pausen überspringen das)
   let photoSection = "";
-  let isNextDisabled = !photoUploadedForCurrentSpot;
+  const isSpotResolved = uploadedSpotsMap[index] === "completed" || uploadedSpotsMap[index] === "skipped" || spot.isBreak;
+  let isNextDisabled = !isSpotResolved;
 
   if (spot.isBreak) {
     isNextDisabled = false; 
   } else {
+    const isUploaded = uploadedSpotsMap[index] === "completed";
+    const isSkipped = uploadedSpotsMap[index] === "skipped";
+    
+    const skippedBanner = isSkipped ? `
+      <div style="margin-bottom: 8px; padding: 6px 10px; background: rgba(255, 159, 67, 0.15); border: 1px solid #ff9f43; color: #ff9f43; border-radius: var(--radius); font-size: 0.85rem; text-align: center;">
+        ⚠️ This spot has been skipped (${escapeHTML(skipReasonsMap[index])})
+      </div>
+    ` : "";
+
     photoSection = `
+      ${skippedBanner}
       <div class="photo-proof-container" style="margin: 4px 0 8px 0; padding: 12px; background: rgba(255,255,255,0.05); border-radius: var(--radius); border: 1px dashed var(--color-border);">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
-        <button class="btn btn--camera ${photoUploadedForCurrentSpot ? 'has-photo' : ''}" id="cameraBtn">
-          ${photoUploadedForCurrentSpot ? "✅ Proof Photo Uploaded" : "📸 Take Proof Photo (Flyer)"}
+        <button class="btn btn--camera ${isUploaded ? 'has-photo' : ''}" id="cameraBtn">
+          ${isUploaded ? "✅ Proof Photo Uploaded" : "📸 Take Proof Photo (Flyer)"}
+        </button>
+        <button class="btn btn--ghost btn--lg" data-action="trigger-skip" style="margin-top: var(--space-s); width: 100%; border-color: rgba(255,255,255,0.15);">
+          ⏭️ Skip Spot
         </button>
       </div>
     `;
@@ -321,16 +475,176 @@ function buildActiveHTML(spot, index) {
     </div>`;
 }
 
+/* HELPER TO COUNT UNFINISHED SPOTS PRECEDING THE TARGET INDEX */
+function countUnfinishedSpotsBefore(targetIndex) {
+  let count = 0;
+  for (let i = 0; i < targetIndex; i++) {
+    if (!currentSpots[i].isBreak && uploadedSpotsMap[i] !== "completed") {
+      count++;
+    }
+  }
+  return count;
+}
+
+/* HELPER TO FIND THE LAST COMPLETED SPOT INDEX FOR THE WARNING MESSAGE */
+function getLastCompletedSpotIndex() {
+  for (let i = uploadedSpotsMap.length - 1; i >= 0; i--) {
+    if (uploadedSpotsMap[i] === "completed" && !currentSpots[i].isBreak) {
+      return i;
+    }
+  }
+  return -1; 
+}
+
+/* ASYNC WARNING PROCESSOR FOR FLEXIBLE OPERATIONS */
+let pendingActionCallback = null;
+
+function executeWithSkipWarning(targetIndex, actionCallback) {
+  const unfinishedCount = countUnfinishedSpotsBefore(targetIndex);
+  
+  if (unfinishedCount > 0) {
+    const lastCompletedIdx = getLastCompletedSpotIndex();
+    const currentSpotDisplay = lastCompletedIdx !== -1 ? lastCompletedIdx + 1 : 0;
+
+    skipWarningMessage.textContent = `You are currently at Spot ${currentSpotDisplay}. There are still ${unfinishedCount} unfinished spots before this location. Do you want to continue anyway?`;
+    pendingActionCallback = actionCallback;
+    
+    skipWarningBackdrop.hidden = false;
+    skipWarningSheet.hidden = false;
+  } else {
+    actionCallback();
+  }
+}
+
+// Bind Skip Warning Listeners
+(function initSkipWarningListeners() {
+  document.getElementById("skipContinueBtn").addEventListener("click", () => {
+    skipWarningBackdrop.hidden = true;
+    skipWarningSheet.hidden = true;
+    if (pendingActionCallback) {
+      pendingActionCallback();
+      pendingActionCallback = null;
+    }
+  });
+
+  document.getElementById("skipCancelBtn").addEventListener("click", () => {
+    skipWarningBackdrop.hidden = true;
+    skipWarningSheet.hidden = true;
+    pendingActionCallback = null;
+  });
+})();
+
+/* NEW: AUTOMATIC TELEGRAM NOTIFICATION FOR SKIPPED SPOTS */
+async function sendSkipNotificationToTelegram(skippedIndices, targetReason) {
+  if (!skippedIndices || skippedIndices.length === 0) return;
+
+  const emojiMarker = REGION_EMOJIS[currentRegion] || "⚪⚪";
+  const currentGroup = REGION_GROUPS[currentRegion] || "Unknown Team";
+  const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
+  
+  const lastCompletedIdx = getLastCompletedSpotIndex();
+  const locationString = lastCompletedIdx !== -1 ? `Spot ${lastCompletedIdx + 1}` : "None (Route Start)";
+
+  let messageText = "";
+
+  if (skippedIndices.length === 1) {
+    // Single Spot Skip Mode
+    const singleIdx = skippedIndices[0];
+    const spotName = currentSpots[singleIdx]?.name || "Unknown Spot";
+    messageText = `${emojiMarker} *[${currentGroup.toUpperCase()}] skipped Spot ${singleIdx + 1} - ${spotName}.*\n` +
+                  `*Reason:* ${targetReason}\n` +
+                  `*Last Completed Position:* ${locationString}\n` +
+                  `*Route:* ${REGION_LABELS[currentRegion]} [${routeLabel}]`;
+  } else {
+    // Batch Skip Mode (Multiple spots skipped sequentially)
+    const continuedSpotDisplay = currentIndex + 1;
+    messageText = `${emojiMarker} *[${currentGroup.toUpperCase()}] skipped ${skippedIndices.length} spots and continued at Spot ${continuedSpotDisplay}.*\n` +
+                  `*Last Completed Position:* ${locationString}\n` +
+                  `*Route:* ${REGION_LABELS[currentRegion]} [${routeLabel}]\n\n` +
+                  `*Details of skipped locations:*\n`;
+                  
+    skippedIndices.forEach(idx => {
+      const spotName = currentSpots[idx]?.name || "Unknown Spot";
+      const reasonText = idx === currentIndex ? targetReason : (skipReasonsMap[idx] || "Skipped in transition");
+      messageText += `• *Spot ${idx + 1}* – ${spotName}: _${reasonText}_\n`;
+    });
+  }
+
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText, parse_mode: "Markdown" })
+    });
+  } catch (error) {
+    console.error("Error sending skip notification to Telegram:", error);
+  }
+}
+
+/* SKIP REASON OVERLAY LIFECYCLE LISTENERS */
+let skipTargetIndex = null;
+(function initSkipReasonOverlayListeners() {
+  skipReasonSheet.querySelectorAll("[data-reason]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const selectedReason = btn.dataset.reason;
+      if (skipTargetIndex !== null) {
+        
+        // NEW: Detect all preceding uncompleted open spots that are automatically skipped by this jump action
+        const skippedIndicesBatch = [];
+        for (let i = 0; i <= skipTargetIndex; i++) {
+          if (!currentSpots[i].isBreak && uploadedSpotsMap[i] === "open") {
+            skippedIndicesBatch.push(i);
+            // Pre-fill map records for intermediate spots
+            uploadedSpotsMap[i] = "skipped";
+            skipReasonsMap[i] = i === skipTargetIndex ? selectedReason : "Skipped in transition";
+          }
+        }
+
+        // If the targeted active spot wasn't caught yet (e.g. state reset manipulation), force write it
+        if (uploadedSpotsMap[skipTargetIndex] !== "skipped") {
+          uploadedSpotsMap[skipTargetIndex] = "skipped";
+          skipReasonsMap[skipTargetIndex] = selectedReason;
+          if (!skippedIndicesBatch.includes(skipTargetIndex)) {
+            skippedIndicesBatch.push(skipTargetIndex);
+          }
+        }
+        
+        saveRouteProgress();
+        renderList();
+
+        // NEW: Fire automatic message safely in background without blocking the UI worker
+        sendSkipNotificationToTelegram(skippedIndicesBatch, selectedReason);
+      }
+      
+      skipReasonBackdrop.hidden = true;
+      skipReasonSheet.hidden = true;
+      skipTargetIndex = null;
+    });
+  });
+
+  skipReasonCancelBtn.addEventListener("click", () => {
+    skipReasonBackdrop.hidden = true;
+    skipReasonSheet.hidden = true;
+    skipTargetIndex = null;
+  });
+  
+  skipReasonBackdrop.addEventListener("click", () => {
+    skipReasonBackdrop.hidden = true;
+    skipReasonSheet.hidden = true;
+    skipTargetIndex = null;
+  });
+})();
+
+
 /* ── Event delegation on the list ───────────────── */
 function attachListeners() {
   spotList.querySelectorAll(".spot-header[role='button']").forEach((header) => {
     header.addEventListener("click", () => {
-      // Direkter Sprung über Header nur, wenn Foto hochgeladen oder es eine Kaffeepause ist
-      if (photoUploadedForCurrentSpot || currentSpots[currentIndex].isBreak) {
-        jumpToSpot(parseInt(header.closest(".spot-item").dataset.index, 10));
-      } else {
-        alert("Please upload the required proof photo first!");
-      }
+      const targetIdx = parseInt(header.closest(".spot-item").dataset.index, 10);
+      executeWithSkipWarning(targetIdx, () => {
+        jumpToSpot(targetIdx);
+      });
     });
   });
 
@@ -341,7 +655,23 @@ function attachListeners() {
   activeItem.querySelector("[data-action='next']")?.addEventListener("click", () => jumpToSpot(currentIndex + 1));
   activeItem.querySelector("[data-action='finish']")?.addEventListener("click", () => {
     sendRouteFinishedNotification(currentRegion, currentRoute);
+    clearRouteProgress(); 
     showCompletion();
+  });
+
+  // Intercept navigate clicks with correct non-linear check
+  activeItem.querySelector("[data-action='navigate-check']")?.addEventListener("click", (e) => {
+    const url = e.currentTarget.dataset.url;
+    executeWithSkipWarning(currentIndex, () => {
+      window.open(url, "_blank", "noopener");
+    });
+  });
+
+  // Intercept Skip Request triggers
+  activeItem.querySelector("[data-action='trigger-skip']")?.addEventListener("click", () => {
+    skipTargetIndex = currentIndex;
+    skipReasonBackdrop.hidden = false;
+    skipReasonSheet.hidden = false;
   });
 
   // Kamera-Button-Klick
@@ -349,7 +679,12 @@ function attachListeners() {
   const cameraInput = document.getElementById("cameraInput");
 
   if (cameraBtn && cameraInput) {
-    cameraBtn.addEventListener("click", () => cameraInput.click());
+    cameraBtn.addEventListener("click", () => {
+      executeWithSkipWarning(currentIndex, () => {
+        cameraInput.click();
+      });
+    });
+    
     cameraInput.addEventListener("change", (e) => {
       if (e.target.files.length > 0) {
         processAndUploadPhoto(e.target.files[0], cameraBtn);
@@ -361,7 +696,10 @@ function attachListeners() {
 function jumpToSpot(newIndex) {
   if (newIndex < 0 || newIndex >= currentSpots.length) return;
   currentIndex = newIndex;
-  photoUploadedForCurrentSpot = false; // Für den neuen Spot sperren
+  
+  photoUploadedForCurrentSpot = uploadedSpotsMap[currentIndex] === "completed"; 
+  
+  saveRouteProgress(); 
   renderList();
   requestAnimationFrame(() => {
     spotList.querySelector(".spot-item.is-active")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -380,7 +718,7 @@ function processAndUploadPhoto(file, buttonElement) {
     img.src = event.target.result;
     img.onload = function () {
       const canvas = document.createElement("canvas");
-      const MAX_WIDTH = 1024; // Komprimierung schont thailändisches Datenvolumen
+      const MAX_WIDTH = 1024; 
       let width = img.width;
       let height = img.height;
 
@@ -398,9 +736,13 @@ function processAndUploadPhoto(file, buttonElement) {
         const success = await sendPhotoToTelegram(blob);
         if (success) {
           photoUploadedForCurrentSpot = true;
+          uploadedSpotsMap[currentIndex] = "completed"; 
+          skipReasonsMap[currentIndex] = ""; 
+          
+          saveRouteProgress(); 
           buttonElement.className = "btn btn--camera has-photo";
           buttonElement.textContent = "✅ Proof Photo Uploaded";
-          renderList(); // Schaltet den "Next"-Button frei
+          renderList(); 
         } else {
           buttonElement.disabled = false;
           buttonElement.textContent = "❌ Failed. Try Again";
@@ -418,7 +760,6 @@ async function sendPhotoToTelegram(imageBlob) {
   const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
   const spot = currentSpots[currentIndex];
   
-  // Automatische Ermittlung für die Bildbeschriftung
   const currentGroup = REGION_GROUPS[currentRegion] || "Unbekannt";
   const emojiMarker = REGION_EMOJIS[currentRegion] || "⚪⚪";
   
@@ -462,7 +803,7 @@ function showCompletion() {
 }
 
 /* =====================================================
-   7b. AUTOMATISCHE ABSCHLUSS-MELDUNG (MIT AUTOMATISCHEN FARB-EMOJIS)
+   7b. AUTOMATISCHE ABSCHLUSS-MELDUNG
 ===================================================== */
 async function sendRouteFinishedNotification(regionKey, routeKey) {
   const now = new Date();
@@ -473,7 +814,6 @@ async function sendRouteFinishedNotification(regionKey, routeKey) {
   const finalRegion = REGION_LABELS[regionKey] || regionKey;
   const finalRoute = routeLabels[routeKey] || routeKey;
   
-  // Automatische Bestimmung für die Abschlussmeldung
   const currentGroup = REGION_GROUPS[regionKey] || "Unbekannt";
   const emojiMarker = REGION_EMOJIS[regionKey] || "⚪⚪";
 
@@ -544,7 +884,6 @@ document.getElementById("chatSendAnotherBtn").addEventListener("click", () => {
 async function sendTelegramMessage(text) {
   const routeLabel = currentRoute ? (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute : "";
   
-  // Automatische Kontextbestimmung für das manuelle Chatfenster
   let context = "";
   if (currentRegion) {
     const currentGroup = REGION_GROUPS[currentRegion] || "";
