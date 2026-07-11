@@ -30,6 +30,57 @@
     </div>
   </div>
 
+  <!-- ROUTE RESTORE DIALOGS -->
+  <div class="dropdown-backdrop" id="restoreBackdrop" hidden></div>
+  <div class="dropdown-sheet" id="restoreSheet" hidden>
+    <p class="dropdown-label">Route Progress Found</p>
+    <div class="chat-confirm" style="padding: 0;">
+      <p class="chat-confirm-body" style="margin-bottom: var(--space-m);">
+        A previous route progress was found. Would you like to continue from where you left off?
+      </p>
+      <button class="btn btn--accent btn--lg" id="restoreContinueBtn" style="margin-bottom: var(--space-s);">Continue Route</button>
+      <button class="btn btn--ghost btn--lg" id="restoreRestartBtn">Restart Route</button>
+    </div>
+  </div>
+
+  <div class="dropdown-backdrop" id="confirmRestartBackdrop" hidden></div>
+  <div class="dropdown-sheet" id="confirmRestartSheet" hidden>
+    <p class="dropdown-label" style="color: #ff6b6b;">Are you sure?</p>
+    <div class="chat-confirm" style="padding: 0;">
+      <p class="chat-confirm-body" style="margin-bottom: var(--space-m);">
+        Your current route progress will be permanently deleted and cannot be restored.
+      </p>
+      <button class="btn btn--finish btn--lg" id="finalRestartBtn" style="background: #ff0033; border-color: #ff0033; box-shadow: 0 4px 0 #cc0029; margin-bottom: var(--space-s);">Yes, Restart Route</button>
+      <button class="btn btn--muted btn--lg" id="cancelRestartBtn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- FLEXIBLE NAVIGATION SKIP WARNING DIALOG -->
+  <div class="dropdown-backdrop" id="skipWarningBackdrop" hidden></div>
+  <div class="dropdown-sheet" id="skipWarningSheet" hidden>
+    <p class="dropdown-label" style="color: #ff9f43;">⚠️ Unfinished Spots Ahead</p>
+    <div class="chat-confirm" style="padding: 0;">
+      <p class="chat-confirm-body" id="skipWarningMessage" style="margin-bottom: var(--space-m);">
+        You are currently at Spot X. There are still Y unfinished spots before this location. Do you want to continue anyway?
+      </p>
+      <button class="btn btn--accent btn--lg" id="skipContinueBtn" style="margin-bottom: var(--space-s);">Continue anyway</button>
+      <button class="btn btn--ghost btn--lg" id="skipCancelBtn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- NEW: SKIP REASON SELECTION DIALOG -->
+  <div class="dropdown-backdrop" id="skipReasonBackdrop" hidden></div>
+  <div class="dropdown-sheet" id="skipReasonSheet" hidden>
+    <p class="dropdown-label">Why are you skipping this spot?</p>
+    <div class="dropdown-grid" style="display: flex; flex-direction: column; gap: var(--space-s); padding-bottom: var(--space-m);">
+      <button class="btn btn--muted btn--lg" data-reason="I don't have enough time">I don't have enough time</button>
+      <button class="btn btn--muted btn--lg" data-reason="The spot is closed">The spot is closed</button>
+      <button class="btn btn--muted btn--lg" data-reason="Other reason">Other reason</button>
+      <button class="btn btn--ghost btn--lg" id="skipReasonCancelBtn" style="margin-top: var(--space-xs);">Cancel</button>
+    </div>
+  </div>
+  <!-- END OF NEW DIALOGS -->
+
   <header class="topbar">
     <button class="action-btn" id="actionBtn">Chat</button>
     <h1 class="logo">Party Guide</h1>
