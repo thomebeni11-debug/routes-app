@@ -135,21 +135,26 @@ function clearRouteProgress() {
 
 function checkAndPromptProgress() {
   const rawData = localStorage.getItem(STORAGE_KEY);
-  if (!rawData) return;
+  if (!rawData) return false;
 
   try {
     const progress = JSON.parse(rawData);
     
     if (Date.now() - progress.timestamp > MAX_PROGRESS_AGE) {
       clearRouteProgress();
-      return;
+      return false;
     }
 
-    restoreBackdrop.hidden = false;
-    restoreSheet.hidden = false;
+    if (progress.currentRegion === currentRegion && progress.currentRoute === currentRoute) {
+      restoreBackdrop.hidden = false;
+      restoreSheet.hidden = false;
+      return true;
+    }
+    return false;
   } catch (e) {
     console.error("Error parsing stored progress", e);
     clearRouteProgress();
+    return false;
   }
 }
 
@@ -196,6 +201,7 @@ function checkAndPromptProgress() {
     confirmRestartSheet.hidden = true;
     restoreBackdrop.hidden = true;
     restoreSheet.hidden = true;
+    loadRouteNormally();
   });
 
   cancelRestartBtn.addEventListener("click", () => {
@@ -216,7 +222,6 @@ function checkAndPromptProgress() {
       loginScreen.style.opacity = "0";
       setTimeout(() => { 
         loginScreen.hidden = true; 
-        checkAndPromptProgress(); 
       }, 320);
     } else {
       loginError.hidden = false;
@@ -333,6 +338,13 @@ dropdownBackdrop.addEventListener("click", closeDropdown);
    6. LOAD ROUTE  –  fetch spots + render list
 ===================================================== */
 function loadRoute() {
+  const hasPrompted = checkAndPromptProgress();
+  if (!hasPrompted) {
+    loadRouteNormally();
+  }
+}
+
+function loadRouteNormally() {
   const regionData = spotsData[currentRegion];
   currentSpots = (regionData && regionData.routes[currentRoute]) || [];
   currentIndex = 0;
