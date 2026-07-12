@@ -2,10 +2,50 @@
 const APP_PASSWORD = "jungle";
 // ─────────────────────────────────────────────────────
 
-// ─── TELEGRAM CONFIG ──────────────────────────────────
-const TELEGRAM_BOT_TOKEN = "8844480922:AAFjtOK2jb3Ps93oavshw6pfzcuH4V556BU";
-const TELEGRAM_CHAT_ID   = "7878544568";
-// ─────────────────────────────────────────────────────
+/**
+ * Konfiguration für die Telegram-Integration
+ */
+const TELEGRAM_BOT_TOKEN = "8844480922:AAE1L8E3-SvFxquCIcNUrI-KNGqefACBP88";
+const TELEGRAM_CHAT_ID = "-1004439585716";
+
+/**
+ * Zentrale Funktion zum Senden von Nachrichten an die Telegram-Gruppe
+ */
+async function sendTelegramMessage(message) {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    try {
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                chat_id: TELEGRAM_CHAT_ID, 
+                text: message 
+            })
+        });
+    } catch (error) {
+        console.error("Fehler beim Senden der Telegram-Nachricht:", error);
+    }
+}
+
+/**
+ * Zentrale Funktion zum Senden von Fotos an die Telegram-Gruppe
+ */
+async function sendTelegramPhoto(photoUrl, caption) {
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+    try {
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                chat_id: TELEGRAM_CHAT_ID, 
+                photo: photoUrl, 
+                caption: caption 
+            })
+        });
+    } catch (error) {
+        console.error("Fehler beim Senden des Telegram-Fotos:", error);
+    }
+}
 
 // ─── ROUTE OPTIONS PER REGION ─────────────────────────
 const ROUTE_OPTIONS = {
