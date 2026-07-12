@@ -109,10 +109,14 @@ const REGION_EMOJIS = {
 };
 
 /* PERSISTENCE SYSTEM (LOCAL STORAGE)
-   Saves route progress for up to 4 hours.
+   Saves route progress for up to 4 hours per specific route.
 ───────────────────────────────────────────────────── */
-const STORAGE_KEY = "party_guide_progress";
 const MAX_PROGRESS_AGE = 4 * 60 * 60 * 1000; 
+
+// Hilfsfunktion zur Generierung des dynamischen, route-spezifischen Keys
+function getRouteStorageKey(region, route) {
+  return `party_guide_progress_${region}_${route}`;
+}
 
 function saveRouteProgress() {
   if (!currentRegion || !currentRoute) return;
@@ -126,42 +130,45 @@ function saveRouteProgress() {
     skipReasonsMap, 
     timestamp: Date.now()
   };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+  
+  const storageKey = getRouteStorageKey(currentRegion, currentRoute);
+  localStorage.setItem(storageKey, JSON.stringify(progressData));
 }
 
 function clearRouteProgress() {
-  localStorage.removeItem(STORAGE_KEY);
+  if (!currentRegion || !currentRoute) return;
+  const storageKey = getRouteStorageKey(currentRegion, currentRoute);
+  localStorage.removeItem(storageKey);
 }
 
 function checkAndPromptProgress() {
-  const rawData = localStorage.getItem(STORAGE_KEY);
-  if (!rawData) return false;
+  if (!currentRegion || !currentRoute) return;
+  
+  const storageKey = getRouteStorageKey(currentRegion, currentRoute);
+  const rawData = localStorage.getItem(storageKey);
+  if (!rawData) return;
 
   try {
     const progress = JSON.parse(rawData);
     
     if (Date.now() - progress.timestamp > MAX_PROGRESS_AGE) {
-      clearRouteProgress();
-      return false;
+      localStorage.removeItem(storageKey);
+      return;
     }
 
-    if (progress.currentRegion === currentRegion && progress.currentRoute === currentRoute) {
-      restoreBackdrop.hidden = false;
-      restoreSheet.hidden = false;
-      return true;
-    }
-    return false;
+    restoreBackdrop.hidden = false;
+    restoreSheet.hidden = false;
   } catch (e) {
     console.error("Error parsing stored progress", e);
-    clearRouteProgress();
-    return false;
+    localStorage.removeItem(storageKey);
   }
 }
 
 // Bind Persistence Dialog Listeners
 (function initRestoreListeners() {
   restoreContinueBtn.addEventListener("click", () => {
-    const progress = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const storageKey = getRouteStorageKey(currentRegion, currentRoute);
+    const progress = JSON.parse(localStorage.getItem(storageKey));
     if (progress) {
       currentRegion = progress.currentRegion;
       currentRoute = progress.currentRoute;
@@ -201,7 +208,21 @@ function checkAndPromptProgress() {
     confirmRestartSheet.hidden = true;
     restoreBackdrop.hidden = true;
     restoreSheet.hidden = true;
-    loadRouteNormally();
+
+    // Nach dem Löschen des alten Fortschritts die Route frisch initialisieren
+    const regionData = spotsData[currentRegion];
+    currentSpots = (regionData && regionData.routes[currentRoute]) || [];
+    currentIndex = 0;
+    photoUploadedForCurrentSpot = false; 
+    uploadedSpotsMap = new Array(currentSpots.length).fill("open");
+    skipReasonsMap = new Array(currentSpots.length).fill("");
+    const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
+    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${REGION_GROUPS[currentRegion] || ""})`;
+    
+    saveRouteProgress();
+    renderList();
+    showSpotList();
+    spotListWrapper.scrollTop = 0;
   });
 
   cancelRestartBtn.addEventListener("click", () => {
@@ -222,6 +243,7 @@ function checkAndPromptProgress() {
       loginScreen.style.opacity = "0";
       setTimeout(() => { 
         loginScreen.hidden = true; 
+        // Überprüfung hier entfernt, da sie nun dynamisch beim Starten einer Route stattfindet
       }, 320);
     } else {
       loginError.hidden = false;
@@ -285,7 +307,7 @@ actionBtn.addEventListener("click", () => {
     uploadedSpotsMap = [];
     skipReasonsMap = [];
     spotList.innerHTML = "";
-    clearRouteProgress(); 
+    // Beim Klick auf Back löschen wir den Fortschritt nicht mehr global, sondern wechseln nur ins Hauptmenü
     showMainMenu();
   } else {
     openChat();
@@ -328,42 +350,44 @@ function openDropdown(regionKey) {
   dropdownSheet.hidden    = false;
 }
 
+/* =====================================================
+   6. LOAD ROUTE  –  fetch spots + render list
+===================================================== */
+function loadRoute() {
+  const storageKey = getRouteStorageKey(currentRegion, currentRoute);
+  const rawData = localStorage.getItem(storageKey);
+
+  if (rawData) {
+    // Falls für exakt diese Kombination ein Speicherstand existiert, Prompt anzeigen
+    checkAndPromptProgress();
+  } else {
+    // Falls kein Fortschritt existiert, Route normal initialisieren
+    const regionData = spotsData[currentRegion];
+    currentSpots = (regionData && regionData.routes[currentRoute]) || [];
+    currentIndex = 0;
+    photoUploadedForCurrentSpot = false; 
+    
+    uploadedSpotsMap = new Array(currentSpots.length).fill("open");
+    skipReasonsMap = new Array(currentSpots.length).fill("");
+
+    const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
+      .find((o) => o.key === currentRoute)?.label || currentRoute;
+    
+    const currentGroup = REGION_GROUPS[currentRegion] || "";
+    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
+
+    saveRouteProgress(); 
+    renderList();
+    showSpotList();
+    spotListWrapper.scrollTop = 0;
+  }
+}
+
 function closeDropdown() {
   dropdownBackdrop.hidden = true;
   dropdownSheet.hidden = true;
 }
 dropdownBackdrop.addEventListener("click", closeDropdown);
-
-/* =====================================================
-   6. LOAD ROUTE  –  fetch spots + render list
-===================================================== */
-function loadRoute() {
-  const hasPrompted = checkAndPromptProgress();
-  if (!hasPrompted) {
-    loadRouteNormally();
-  }
-}
-
-function loadRouteNormally() {
-  const regionData = spotsData[currentRegion];
-  currentSpots = (regionData && regionData.routes[currentRoute]) || [];
-  currentIndex = 0;
-  photoUploadedForCurrentSpot = false; 
-  
-  uploadedSpotsMap = new Array(currentSpots.length).fill("open");
-  skipReasonsMap = new Array(currentSpots.length).fill("");
-
-  const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
-    .find((o) => o.key === currentRoute)?.label || currentRoute;
-  
-  const currentGroup = REGION_GROUPS[currentRegion] || "";
-  listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
-
-  saveRouteProgress(); 
-  renderList();
-  showSpotList();
-  spotListWrapper.scrollTop = 0;
-}
 
 /* =====================================================
    7. ACCORDION LIST  –  render all spots with Photo Proof
