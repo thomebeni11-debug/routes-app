@@ -77,21 +77,21 @@ const spotsData = {
 
       starter: [
         {
-          name:     "Haad Rin Beach & Beachfront Resorts",
+          name:     "Scooter Parking",
           time:     "15:00 – 17:00",
-          comment:  "Park here to enter the Beach and check all beach front restaurants and pool areas.",
+          comment:  "Park your scooter here and walk towards Tommy Resort.",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
           isBreak:  false
         },
         {
           name:     "Tommy Resort",
           time:     "15:00 – 17:00",
-          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\". From here you can reach the restaurants.",
+          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\". From here you can reach the restaurants. Split up if you are in a team. One person can cover the beach bars while the other visits the beach guests. Meet again on the way to Emma Bar.",
           mapsLink: "https://maps.app.goo.gl/VZiv8A1qYHNhoNbw8",
           isBreak:  false
         },
         {
-          name:     "Emma Bar & Mama Schnitzel Road",
+          name:     "Emma Bar",
           time:     "15:00 – 17:00",
           comment:  "Emma Bar and Mama Schnitzel are in the same road. Street Restaurants starting from here.",
           mapsLink: "https://maps.app.goo.gl/uKdkR32dWLRvGtNt6",
@@ -220,21 +220,21 @@ const spotsData = {
 
       halfDay: [
         {
-          name:     "Haad Rin Beach & Beachfront Resorts",
+          name:     "Scooter Parking",
           time:     "15:00 – 17:00",
-          comment:  "Park here to enter the Beach and check all beach front restaurants and pool areas. From here you can reach the restaurants.",
+          comment:  "Park your scooter here and walk towards Tommy Resort.",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
           isBreak:  false
         },
         {
           name:     "Tommy Resort",
           time:     "15:00 – 17:00",
-          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\".",
+          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\". Split up if you are in a team. One person can cover the beach bars while the other visits the beach guests. Meet again on the way to Emma Bar.",
           mapsLink: "https://maps.app.goo.gl/VZiv8A1qYHNhoNbw8",
           isBreak:  false
         },
         {
-          name:     "Emma Bar & Mama Schnitzel Road",
+          name:     "Emma Bar",
           time:     "15:00 – 17:00",
           comment:  "Emma Bar and Mama Schnitzel are in the same road.",
           mapsLink: "https://maps.app.goo.gl/uKdkR32dWLRvGtNt6",
@@ -426,21 +426,21 @@ const spotsData = {
 
       fullDay: [
         {
-          name:     "Haad Rin Beach & Beachfront Resorts",
+          name:     "Scooter Parking",
           time:     "13:00 – 15:00",
-          comment:  "Park at \"Yoghurt Home\". Check all beach front restaurants and pool areas. Split up to be able to do restaurants and beach at the same time.",
+          comment:  "Park your scooter here and walk towards Tommy Resort.",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
           isBreak:  false
         },
         {
           name:     "Tommy Resort",
           time:     "13:00 – 15:00",
-          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\".",
+          comment:  "Start at: \"Tommy Resort\". Walk the beach until \"Emma Bar\". Split up if you are in a team. One person can cover the beach bars while the other visits the beach guests. Meet again on the way to Emma Bar.",
           mapsLink: "https://maps.app.goo.gl/VZiv8A1qYHNhoNbw8",
           isBreak:  false
         },
         {
-          name:     "Beach Restaurants Area",
+          name:     "Emma Bar",
           time:     "13:00 – 15:00",
           comment:  "Check beach front zone.",
           mapsLink: "https://maps.app.goo.gl/uKdkR32dWLRvGtNt6",
@@ -576,7 +576,7 @@ const spotsData = {
           name:     "Tiki Beach",
           time:     "15:00 – 17:00",
           comment:  "Go inside until the beach & restaurant.",
-          mapsLink: "https://www.google.com/maps/place/Tiki+Beach+-+Resort,+Beach+Bar,+Restaurant,+Co-working/@9.7042264,100.0041582,17z/data=!4m10!3m9!1s0x3054fe804e1fe0cf:0xeff1c4d76e0679fe!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7042211!4d100.0067278!16s%2Fg%2F11h77pzfxq?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/Tiki+Beach+-+Resort,+Beach+Bar,+Restaurant,+Co-working/@9.7042264,100.0067278,17z/data=!4m10!3m9!1s0x3054fe804e1fe0cf:0xeff1c4d76e0679fe!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7042211!4d100.0067278!16s%2Fg%2F11h77pzfxq?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
           isBreak:  false
         },
         {
@@ -604,7 +604,7 @@ const spotsData = {
           name:     "Uppercut Thai Restaurant",
           time:     "15:00 – 17:00",
           comment:  "Check out the restaurant next door too.",
-          mapsLink: "https://www.google.com/maps/place/Uppercut+-+Authentic+%5BMuay%5D+Thai+Food/@9.7078341,99.994082,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fdc4ca95f3af:0xc553a1f97c731563!8m2!3d9.7078288!4d99.9966516!16s%2Fg%2F11h_k3t007?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/Uppercut+-+Authentic+%5BMuay%5D+Thai+Food/@9.7078341,99.9966516,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fdc4ca95f3af:0xc553a1f97c731563!8m2!3d9.7078288!4d99.9966516!16s%2Fg%2F11h_k3t007?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
           isBreak:  false
         },
         {
@@ -618,7 +618,7 @@ const spotsData = {
           name:     "Island Life Bungalows",
           time:     "15:00 – 17:00",
           comment:  "Go until the beach and check the restaurant.",
-          mapsLink: "https://www.google.com/maps/place/ISLAND+LIFE+BUNGALOWS/@9.7066445,99.9929659,17z/data=!4m10!3m9!1s0x3054fd45b2b3291d:0xfd47839c81a121d5!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7066392!4d99.9955355!16s%2Fg%2F11rfr71fzj?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/ISLAND+LIFE+BUNGALOWS/@9.7066392,99.9955355,17z/data=!4m10!3m9!1s0x3054fd45b2b3291d:0xfd47839c81a121d5!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7066392!4d99.9955355!16s%2Fg%2F11rfr71fzj?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
           isBreak:  false
         },
         {
@@ -822,17 +822,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "3:00 – 5:00 PM",
           comment: "All tables here",
-          mapsLink: "https://www.google.com/maps/place/MamaKOP+Res",
-          isBreak: false
-        },
-        {
-          name: "Sangsom / MamaKOP 2",
-          time: "3:00 – 5:00 PM",
-          comment: "Next door to MamaKOP",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC17oaS709",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -853,7 +846,7 @@ const spotsData = {
           name: "Zen Beach",
           time: "6:00 – 6:20 PM Sunset Time",
           comment: "Walk along the beach, dont flyer bikes here",
-          mapsLink: "https://maps.app.goo.gl/F6MB9DwbpBQdUJ117",
+          mapsLink: "https://www.google.com/maps/place/Zen+Beach/@9.7577607,99.961105,17z/data=!3m1!4b1!4m6!3m5!1s0x30550113cd78e5a7:0x80ffe9ef68c02cb7!8m2!3d9.7577607!4d99.961105!16s%2Fg%2F11tsnpp6ns?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -864,13 +857,6 @@ const spotsData = {
           isBreak: true
         },
         {
-          name: "Sangsom / MamaKOP 2",
-          time: "7:00 – 8:00 PM",
-          comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
-          isBreak: false
-        },
-        {
           name: "Mama Market Srithanu",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
@@ -878,10 +864,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
-          mapsLink: "https://www.google.com/maps/place/MamaKOP+Re",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -899,7 +885,7 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "Farida Helal Restaurant",
+          name: "Farida Halal Restaurant",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
           mapsLink: "https://maps.app.goo.gl/iMy7EW7FqZB3ak3m7",
@@ -965,17 +951,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "3:00 – 5:00 PM",
           comment: "All tables here",
-          mapsLink: "https://www.google.com/maps/place/MamaKOP+Res",
-          isBreak: false
-        },
-        {
-          name: "Sangsom / MamaKOP 2",
-          time: "3:00 – 5:00 PM",
-          comment: "Next door to MamaKOP",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC17oaS709",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -989,7 +968,7 @@ const spotsData = {
           name: "Wang Sai Resort",
           time: "3:00 – 5:00 PM",
           comment: "Enter from Wang Sai Resort Parking walk down the beach to",
-          mapsLink: "https://www.google.com/maps/place/Wang+Sai+Res",
+          mapsLink: "https://www.google.com/maps/place/Wang+Sai+Resort/@9.7946078,99.9794312,18.34z/data=!4m9!3m8!1s0x3054fd9555555555:0xbbcdbe2761a2799d!5m2!4m1!1i2!8m2!3d9.7946569!4d99.9802805!16s%2Fg%2F12vsdrzm9?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1017,7 +996,7 @@ const spotsData = {
           name: "Zen Beach",
           time: "6:00 – 6:20 PM Sunset Time",
           comment: "Walk along the beach, dont flyer bikes here",
-          mapsLink: "https://maps.app.goo.gl/F6MB9DwbpBQdUJ117",
+          mapsLink: "https://www.google.com/maps/place/Zen+Beach/@9.7577607,99.961105,17z/data=!3m1!4b1!4m6!3m5!1s0x30550113cd78e5a7:0x80ffe9ef68c02cb7!8m2!3d9.7577607!4d99.961105!16s%2Fg%2F11tsnpp6ns?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1028,13 +1007,6 @@ const spotsData = {
           isBreak: true
         },
         {
-          name: "Sangsom / MamaKOP 2",
-          time: "7:00 – 8:00 PM",
-          comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
-          isBreak: false
-        },
-        {
           name: "Mama Market Srithanu",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
@@ -1042,10 +1014,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
-          mapsLink: "https://www.google.com/maps/place/MamaKOP+Re",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1063,7 +1035,7 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "Farida Helal Restaurant",
+          name: "Farida Halal Restaurant",
           time: "7:00 – 8:00 PM",
           comment: "All tables here",
           mapsLink: "https://maps.app.goo.gl/iMy7EW7FqZB3ak3m7",
@@ -1104,7 +1076,7 @@ const spotsData = {
           name: "Farida Halal Restaurant",
           time: "1:00 – 3:00 PM (Thong Sala)",
           comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/9bvqJP73kKhiapYS8",
+          mapsLink: "https://maps.app.goo.gl/iMy7EW7FqZB3ak3m7",
           isBreak: false
         },
         {
@@ -1132,7 +1104,7 @@ const spotsData = {
           name: "Food Factory",
           time: "1:00 – 3:00 PM (Thong Sala)",
           comment: "only give to customers - no tables",
-          mapsLink: "https://maps.app.goo.gl/wCQgeuVgtkfY7p5Y8",
+          mapsLink: "https://www.google.com/maps/place/Food+Factory+Koh+Phangan/@9.7087244,100.0022606,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fc32bd60245f:0x3f6a6b8ccf2a50f1!8m2!3d9.7087244!4d100.0022606!16s%2Fg%2F11c54fh896?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1153,14 +1125,14 @@ const spotsData = {
           name: "Uppercut - Authentic Thai Food",
           time: "1:00 – 3:00 PM (Thong Sala)",
           comment: "Leave flyer in the spice trays on the table",
-          mapsLink: "https://maps.app.goo.gl/prJsJ1RKDWAZU7HC9",
+          mapsLink: "https://www.google.com/maps/place/Uppercut+-+Authentic+%5BMuay%5D+Thai+Food/@9.7078288,99.9966516,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fdc4ca95f3af:0xc553a1f97c731563!8m2!3d9.7078288!4d99.9966516!16s%2Fg%2F11h_k3t007?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
           name: "Yok Krok",
           time: "1:00 – 3:00 PM (Thong Sala)",
-          comment: "Please introduce yourself politely.",
-          mapsLink: "https://www.google.com/maps/place/%E0%B8%A2%E0%B8%81%E0%B8%83%E0%B8%A3%E0%B8%81+Yok+K",
+          comment: "Opposite Upper Cut. Please introduce yourself politely.",
+          mapsLink: "https://www.google.com/maps/place/ยกครก+Yok+Krok+(เกาะพะงัน)/@9.7069427,99.9952151,19z/data=!4m6!3m5!1s0x3055a1a35c114f07:0x6cdca65326595045!8m2!3d9.7076852!4d99.9964788!16s%2Fg%2F11zh_v5hzb?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1178,24 +1150,17 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "3:00 – 5:00 PM (West Coast)",
           comment: "All tables here",
-          mapsLink: "https://www.google.com/maps/place/MamaKOP+RE",
-          isBreak: false
-        },
-        {
-          name: "Sangsom/MamaKOP 2",
-          time: "3:00 – 5:00 PM (West Coast)",
-          comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
           name: "Scene Nymph",
           time: "3:00 – 5:00 PM (West Coast)",
           comment: "Please introduce yourself politely.",
-          mapsLink: "https://www.google.com/maps/place/Scene+Nymph",
+          mapsLink: "https://www.google.com/maps/place/Scene+Nymph/@9.7703839,99.9620377,17z/data=!4m6!3m5!1s0x305501eb6584f3b9:0x519cd44811e233f7!8m2!3d9.7718853!4d99.9637543!16s%2Fg%2F11kt8tc3v3?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1216,7 +1181,7 @@ const spotsData = {
           name: "Wang Sai Resort",
           time: "3:00 – 5:00 PM (West Coast)",
           comment: "Enter from Wang Sai Resort Parking walk down the beach to Ko Ma",
-          mapsLink: "https://www.google.com/maps/place/Wang+Sai+Re",
+          mapsLink: "https://www.google.com/maps/place/Wang+Sai+Resort/@9.7946078,99.9794312,18.34z/data=!4m9!3m8!1s0x3054fd9555555555:0xbbcdbe2761a2799d!5m2!4m1!1i2!8m2!3d9.7946569!4d99.9802805!16s%2Fg%2F12vsdrzm9?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1244,7 +1209,7 @@ const spotsData = {
           name: "Zen Beach",
           time: "6:00 – 6:20 PM (Sunset Time)",
           comment: "Walk along the beach, dont flyer bikes here",
-          mapsLink: "https://maps.app.goo.gl/F6MB9DwbpBQdUJ117",
+          mapsLink: "https://www.google.com/maps/place/Zen+Beach/@9.7577607,99.961105,17z/data=!3m1!4b1!4m6!3m5!1s0x30550113cd78e5a7:0x80ffe9ef68c02cb7!8m2!3d9.7577607!4d99.961105!16s%2Fg%2F11tsnpp6ns?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1253,13 +1218,6 @@ const spotsData = {
           comment: "Please dont start the restaurants before 7PM",
           mapsLink: "",
           isBreak: true
-        },
-        {
-          name: "Sangsom/MamaKOP 2",
-          time: "7:00 – 7:30 PM (Srithanu)",
-          comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
-          isBreak: false
         },
         {
           name: "Mama Market Srithanu",
@@ -1283,10 +1241,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "MamaKOP",
+          name: "MamaKOP Restaurant",
           time: "7:00 – 7:30 PM (Srithanu)",
           comment: "All tables here",
-          mapsLink: "https://maps.app.goo.gl/fjvtZGdYT5Bz13YF7",
+          mapsLink: "https://www.google.com/maps/place/MamaKOP+Restaurant/@9.7498209,99.9782256,17z/data=!3m1!4b1!4m6!3m5!1s0x305501ddd5505f4b:0x99007068c8d37f5b!8m2!3d9.7498209!4d99.9782256!16s%2Fg%2F11gb410xv8?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1304,10 +1262,10 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "No Name Restaurant",
+          name: "No Name Kitchen",
           time: "8:00 – 9:00 PM (Thong Sala / Baan Tai)",
           comment: "only give to customers",
-          mapsLink: "https://maps.app.goo.gl/qgGAN1rUM3QCKpjF8",
+          mapsLink: "https://www.google.com/maps/place/No+name+kitchen+Phangan/@9.7081686,99.9952509,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fcbad5a153b5:0xa1eb477e4eae1a38!8m2!3d9.7081686!4d99.9952509!16s%2Fg%2F11bw51w0kb?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1321,7 +1279,7 @@ const spotsData = {
           name: "Food Factory",
           time: "8:00 – 9:00 PM (Thong Sala / Baan Tai)",
           comment: "All tables",
-          mapsLink: "https://maps.app.goo.gl/wCQqeuVqtkfY7p5Y8",
+          mapsLink: "https://www.google.com/maps/place/Food+Factory+Koh+Phangan/@9.7087244,100.0022606,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fc32bd60245f:0x3f6a6b8ccf2a50f1!8m2!3d9.7087244!4d100.0022606!16s%2Fg%2F11c54fh896?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
@@ -1339,7 +1297,7 @@ const spotsData = {
           isBreak: false
         },
         {
-          name: "Farida Helal Restaurant",
+          name: "Farida Halal Restaurant",
           time: "8:00 – 9:00 PM (Thong Sala / Baan Tai)",
           comment: "All tables",
           mapsLink: "https://maps.app.goo.gl/iMy7EW7FqZB3ak3m7",
@@ -1363,7 +1321,7 @@ const spotsData = {
           name: "At Chiang Mai Restaurant",
           time: "8:00 – 9:00 PM (Thong Sala / Baan Tai)",
           comment: "All tables",
-          mapsLink: "https://maps.app.goo.gl/DnHaxg92ASYPEZM08",
+          mapsLink: "https://www.google.com/maps/place/At+Chiang+Mai/@9.7009888,100.0159076,17z/data=!4m6!3m5!1s0x3054fd57f600188b:0x5a3ae4656dc12b7c!8m2!3d9.7015281!4d100.0175169!16s%2Fg%2F11td0mp3cw?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
           isBreak: false
         },
         {
