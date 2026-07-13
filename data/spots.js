@@ -744,7 +744,7 @@ const spotsData = {
           name:     "Moon House bis Drop In Bar",
           time:     "19:00 – 21:00",
           comment:  "Walk down the beach and hit all the open bars.",
-          mapsLink: "https://www.google.com/maps/place/Moon+House+Beach+Bar+%26+Restaurant/@9.6761217,100.0652053,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fd5018820b15:0xbd6b844e9e187593!8m2!3d9.6761164!4d100.0677802!16s%2Fg%2F11frl627s8",
+          mapsLink: "https://www.google.com/maps/place/Moon+House+Beach+Bar+%26+Restaurant/@9.6761217,100.0652053,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fd5018820b15:0xbd6b844e9e187593!8m2!3d9.6761164!4d100.0670782!16s%2Fg%2F11frl627s8",
           isBreak:  false
         },
         {
@@ -1494,13 +1494,6 @@ const spotsData = {
           time:     "2-5PM (Baan Tai / Thong Sala)",
           comment:  "All tables here",
           mapsLink: "https://maps.app.goo.gl/fjvtZGdYT5Bz13YF7",
-          isBreak:  false
-        },
-        {
-          name:     "Sangsom",
-          time:     "2-5PM (Baan Tai / Thong Sala)",
-          comment:  "Next door to MamaKOP",
-          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
           isBreak:  false
         },
         {
