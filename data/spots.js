@@ -1265,7 +1265,7 @@ const spotsData = {
           name: "No Name Kitchen",
           time: "8:00 – 9:00 PM (Thong Sala / Baan Tai)",
           comment: "only give to customers",
-          mapsLink: "https://www.google.com/maps/place/No+name+kitchen+Phangan/@9.7081686,99.9952509,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fcbad5a153b5:0xa1eb477e4eae1a38!8m2!3d9.7081686!4d99.9952509!16s%2Fg%2F11bw51w0kb?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/No+name+kitchen+Phangan/@9.7081686,99.9952509,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fcbad5a153b5:0xa1eb477e4eae1a38!8m2!3d9.7081686!4d99.9952509!16s%2Fg%2F11bw51w0kb",
           isBreak: false
         },
         {
@@ -1347,7 +1347,269 @@ const spotsData = {
   // ───────────────────────────────────────────────────
   mixedTour: {
     bonusMessage: "🎉 Free entry to the party tonight – you've earned it!",
-    routes: { fullDay: [] }
+    routes: {
+      fullDay: [
+        {
+          name:     "Haad Rin Beach & Beachfront resorts",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Park here to enter the Beach",
+          mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
+          isBreak:  false
+        },
+        {
+          name:     "Tommy Resort",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Start at \"Tommy Resort\" and check all beach front restaurants and pool areas. Walk the beach until \"Emma Bar\". Split up to be able to do restaurants and beach at the same",
+          mapsLink: "https://maps.app.goo.gl/VZiv8A1qYHNhoNbw8",
+          isBreak:  false
+        },
+        {
+          name:     "Emma Bar",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Split up to be able to do restaurants and beach at the same",
+          mapsLink: "https://maps.app.goo.gl/uKdkR32dWLRvGtNt6",
+          isBreak:  false
+        },
+        {
+          name:     "Mama Schnitzel",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Street Restaurants starting from here. All tables here",
+          mapsLink: "https://maps.app.goo.gl/p2SpWQLM9RfngAtu5",
+          isBreak:  false
+        },
+        {
+          name:     "Paprika Restaurant",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/8Lwk5AELgsAYtDX49",
+          isBreak:  false
+        },
+        {
+          name:     "MoonSpoon Restaurant",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Please introduce yourself politely.",
+          mapsLink: "https://www.google.com/maps/place/MoonSpoon+Restaurant/@9.6767761,100.067061,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fdf775167c59:0x631a526817ca704f!8m2!3d9.6767761!4d100.067061!16s%2Fg%2F11xg5t5kgc",
+          isBreak:  false
+        },
+        {
+          name:     "Pranee Thai Food",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/8JAsqyouZ1bbsk2W8",
+          isBreak:  false
+        },
+        {
+          name:     "Best Restaurant",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/LwEeMK7oCNk8KtfHA",
+          isBreak:  false
+        },
+        {
+          name:     "Bt. Restaurant Koh Phangan",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/nS64DnJNYcqojBPx7",
+          isBreak:  false
+        },
+        {
+          name:     "MBar Hostel",
+          time:     "1-2PM (Haad Rin)",
+          comment:  "Say hello at the reception",
+          mapsLink: "https://maps.app.goo.gl/M1fSKh5ftqcWjaKU8",
+          isBreak:  false
+        },
+        {
+          name:     "Tom's Kitchen",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/4bRdYdK7n3Mjgz2dA",
+          isBreak:  false
+        },
+        {
+          name:     "Echo Hostel",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables & Bikes, walk to the beach front.",
+          mapsLink: "https://maps.app.goo.gl/z2KDgS5bSVVgaomx8",
+          isBreak:  false
+        },
+        {
+          name:     "Lifestyle Restaurant",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/bEvvoiahYoVi5bdDA",
+          isBreak:  false
+        },
+        {
+          name:     "Mama Restaurant",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://www.google.com/maps/place/Mama+Thai+food+%26+Drink/@9.7037051,100.0099583,18z/data=!4m10!1m2!2m1!1sMama+Restaurant!3m6!1s0x3054fd54ee3757a9:0x608704daed4f3e8!8m2!3d9.7047011!4d100.0109968!15sCg9NYW1hIFJlc3RhdXJhbnRaESIPbWFtYSByZXN0YXVyYW50kgEQYXNpYW5fcmVzdGF1cmFudJoBI0NoWkRTVWhOTUc5blMwVkpRMEZuVFVSbmNTMHlPRTkzRUFF4AEA-gEECAAQSQ!16s%2Fg%2F11tp2bhgrl",
+          isBreak:  false
+        },
+        {
+          name:     "Wanderlust Hostel",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables, bars and bikes here",
+          mapsLink: "https://www.google.com/maps/place/The+Wanderlust+Hostel/@9.7085546,100.0023943,17z/data=!4m10!3m9!1s0x3054fd44f32e9505:0x607b0ef9c36388ca!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7085493!4d100.0049639!16s%2Fg%2F11s5brh65n?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          isBreak:  false
+        },
+        {
+          name:     "Kohmunity Hostel",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables, bars and bikes here",
+          mapsLink: "https://maps.app.goo.gl/GBrxfk36gWUTm9F16",
+          isBreak:  false
+        },
+        {
+          name:     "The Cosy",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "nicht angegeben",
+          mapsLink: "https://maps.app.goo.gl/KrbCBGjuZVvJBV6GA",
+          isBreak:  false
+        },
+        {
+          name:     "Island life Bungalows",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "You can walk from the Cosy via beach",
+          mapsLink: "https://maps.app.goo.gl/oGVBL65HuAAGjY7j8",
+          isBreak:  false
+        },
+        {
+          name:     "Food Court",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/5owTkq9XnjZFJUxm8",
+          isBreak:  false
+        },
+        {
+          name:     "Phantip Market",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/A9Wi4h1RXE4rU11V6",
+          isBreak:  false
+        },
+        {
+          name:     "MamaKOP",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/fjvtZGdYT5Bz13YF7",
+          isBreak:  false
+        },
+        {
+          name:     "Sangsom",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "Next door to MamaKOP",
+          mapsLink: "https://maps.app.goo.gl/uByC1AaSC170aS709",
+          isBreak:  false
+        },
+        {
+          name:     "Wang Sai Resort",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "Enter from Wang Sai Resort Parking walk down the beach to",
+          mapsLink: "https://www.google.com/maps/place/Wang+Sai+Resort/@9.7946078,99.9794312,18.34z/data=!4m9!3m8!1s0x3054fd9555555555:0xbbcdbe2761a2799d!5m2!4m1!1i2!8m2!3d9.7946569!4d99.9802805!16s%2Fg%2F12vsdrzm9?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
+          isBreak:  false
+        },
+        {
+          name:     "Koh Maa Beach",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "Walk down the Sandbank",
+          mapsLink: "https://maps.app.goo.gl/RYgYutm7K2U2rA5T8",
+          isBreak:  false
+        },
+        {
+          name:     "420 Club Phangan",
+          time:     "2-5PM (Baan Tai / Thong Sala)",
+          comment:  "Take the road leading up to Utopia Resort",
+          mapsLink: "https://maps.app.goo.gl/VdRNr5EvqpqkzxCm9",
+          isBreak:  false
+        },
+        {
+          name:     "Break",
+          time:     "5-5:30PM",
+          comment:  "You might have your break at 420 Bar. Need to leave around 5:30 to be in time for Amsterdam Bar",
+          mapsLink: "",
+          isBreak:  true
+        },
+        {
+          name:     "Amsterdam Bar - Upstairs & Bikes",
+          time:     "6-6:20PM Sunset Tme",
+          comment:  "Important that you dont arrive to early or too late.",
+          mapsLink: "https://maps.app.goo.gl/ev4AZmvN8mu8ZnVVA",
+          isBreak:  false
+        },
+        {
+          name:     "Break",
+          time:     "6:30-7PM",
+          comment:  "Please dont start the restaurants before 7PM",
+          mapsLink: "",
+          isBreak:  true
+        },
+        {
+          name:     "Phantip Market",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/A9Wi4h1RXE4rU11V6",
+          isBreak:  false
+        },
+        {
+          name:     "Food Court",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/5owTkq9XnjZFJUxm8",
+          isBreak:  false
+        },
+        {
+          name:     "Nine Restaurant & Bar",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/n1QovpPWoezTqgwr5",
+          isBreak:  false
+        },
+        {
+          name:     "Food Factory",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "only give to customers - no tables",
+          mapsLink: "https://www.google.com/maps/place/Food+Factory+Koh+Phangan/@9.7087244,100.0022606,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fc32bd60245f:0x3f6a6b8ccf2a50f1!8m2!3d9.7087244!4d100.0022606!16s%2Fg%2F11c54fh896?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D",
+          isBreak:  false
+        },
+        {
+          name:     "Farida Helal Restaurant",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/iMy7EW7FqZB3ak3m7",
+          isBreak:  false
+        },
+        {
+          name:     "Mama Restaurant",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables here",
+          mapsLink: "https://maps.app.goo.gl/S5cudyg1cyLbQLCm6",
+          isBreak:  false
+        },
+        {
+          name:     "Lifestyle Restaurant",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables all bikes",
+          mapsLink: "https://maps.app.goo.gl/kc8ZhcNahkFF31PVA",
+          isBreak:  false
+        },
+        {
+          name:     "Echo Hostel",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All tables and bikes",
+          mapsLink: "https://maps.app.goo.gl/z2KDgS5bSVVgaomx8",
+          isBreak:  false
+        },
+        {
+          name:     "Vintage Nightmarket",
+          time:     "7-9PM (Thong Sala / Baan Tai)",
+          comment:  "All bikes here. After Vintage Market return to Phantip Market and Food Court if time left.",
+          mapsLink: "https://maps.app.goo.gl/h4d8wigEWxaGnEkw6",
+          isBreak:  false
+        }
+      ]
+    }
   }
 
 };
