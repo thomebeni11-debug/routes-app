@@ -515,7 +515,9 @@ function buildActiveHTML(spot, index) {
 function countUnfinishedSpotsBefore(targetIndex) {
   let count = 0;
   for (let i = 0; i < targetIndex; i++) {
-    if (!currentSpots[i].isBreak && uploadedSpotsMap[i] !== "completed") {
+    // Ein Spot zählt nur als unerledigt, wenn er explizit 'open' ist.
+    // 'completed' und 'skipped' werden ignoriert.
+    if (!currentSpots[i].isBreak && uploadedSpotsMap[i] === "open") {
       count++;
     }
   }
