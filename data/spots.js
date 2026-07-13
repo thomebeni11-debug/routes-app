@@ -199,7 +199,7 @@ const spotsData = {
           name:     "Wanderlust Hostel",
           time:     "19:00 – 20:00",
           comment:  "All tables and bikes.",
-          mapsLink: "https://www.google.com/maps/place/The+Wanderlust+Hostel/@9.7085546,100.0023943,17z/data=!4m10!3m9!1s0x3054fd44f32e9505:0x607b0ef9c36388ca!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7085493!4d100.0049639!16s%2Fg%2F11s5brh65n?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/The+Wanderlust+Hostel/@9.7085546,100.0023943,17z/data=!4m10!3m9!1s0x3054fd44f32e9505:0x607b0ef9c36388ca!5m3!1s2026-07-12!4m1!1i2!8m2!3d9.7085493!4d100.0049639!16s%2Fg%2F11s5brh65n?entry=ttu&g_ep=EgoyMDI2MDcwOS4wIKXMDSoASAFQAw%3D%3D",
           isBreak:  false
         },
         {
@@ -702,7 +702,7 @@ const spotsData = {
           name:     "Lucky Crab",
           time:     "19:00 – 21:00",
           comment:  "All tables here.",
-          mapsLink: "https://www.google.com/maps/place/Lucky+crab+restaurant/@9.6748341,100.0620539,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fca4afe04c7d:0x286b2ce91148e7be!8m2!3d9.6748288!4d100.0646235!16s%2Fg%2F11hf3wgg9m?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
+          mapsLink: "https://www.google.com/maps/place/Lucky+crab+restaurant/@9.6748341,100.0620539,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fca4afe04c7d:0x286b2ce91148e7be!8m2!3d9.6748288!4d100.0648235!16s%2Fg%2F11hf3wgg9m?entry=ttu&g_ep=EgoyMDI2MDcwNS4wIKXMDSoASAFQAw%3D%3D",
           isBreak:  false
         },
         {
@@ -744,7 +744,7 @@ const spotsData = {
           name:     "Moon House bis Drop In Bar",
           time:     "19:00 – 21:00",
           comment:  "Walk down the beach and hit all the open bars.",
-          mapsLink: "https://www.google.com/maps/place/Moon+House+Beach+Bar+%26+Restaurant/@9.6761217,100.0652053,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fd5018820b15:0xbd6b844e9e187593!8m2!3d9.6761164!4d100.0670782!16s%2Fg%2F11frl627s8",
+          mapsLink: "https://www.google.com/maps/place/Moon+House+Beach+Bar+%26+Restaurant/@9.6761217,100.0652053,17z/data=!3m1!4b1!4m6!3m5!1s0x3054fd5018820b15:0xbd6b844e9e187593!8m2!3d9.6761164!4d100.0677802!16s%2Fg%2F11frl627s8",
           isBreak:  false
         },
         {
