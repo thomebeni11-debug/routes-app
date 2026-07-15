@@ -343,6 +343,8 @@ function loadRoute() {
   const rawData = localStorage.getItem(storageKey);
 
   if (rawData) {
+    // Fehlerbehebung: Vor dem Prompt die Spot-Liste anzeigen, damit die App nicht im Hauptmenü hängen bleibt
+    showSpotList();
     checkAndPromptProgress();
   } else {
     const regionData = spotsData[currentRegion];
@@ -831,12 +833,10 @@ async function sendRouteFinishedNotification(regionKey, routeKey) {
   let skippedCount = 0;
   let totalValidSpots = 0;
 
-  // Berechne valide Spots (Weder ScooterInfo noch Pause)
   currentSpots.forEach((spot, index) => {
     if (!spot.isScooterInfo && !spot.isBreak) {
       totalValidSpots++;
       const status = uploadedSpotsMap[index];
-      // Als übersprungen zählt jeder valide Spot, der kein Foto hat
       if (status !== "completed") {
         skippedCount++;
       }
