@@ -77,11 +77,12 @@ const spotsData = {
 
       starter: [
         {
-          name:     "Scooter Parking",
+          name:     "Park Scooter",
           time:     "15:00 – 17:00",
-          comment:  "Park your scooter here and walk towards Tommy Resort.",
+          comment:  "Park your Scooter here",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Tommy Resort",
@@ -220,11 +221,12 @@ const spotsData = {
 
       halfDay: [
         {
-          name:     "Scooter Parking",
+          name:     "Park Scooter",
           time:     "15:00 – 17:00",
-          comment:  "Park your scooter here and walk towards Tommy Resort.",
+          comment:  "Park your Scooter here",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Tommy Resort",
@@ -269,11 +271,12 @@ const spotsData = {
           isBreak:  false
         },
         {
-          name:     "Pick up Scooter",
+          name:     "Pick-up Scooter",
           time:     "15:00 – 17:00",
-          comment:  "Go and get the bike.",
+          comment:  "Go and get the Bike",
           mapsLink: "",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Leela Beach",
@@ -426,11 +429,12 @@ const spotsData = {
 
       fullDay: [
         {
-          name:     "Scooter Parking",
+          name:     "Park Scooter",
           time:     "13:00 – 15:00",
-          comment:  "Park your scooter here and walk towards Tommy Resort.",
+          comment:  "Park your Scooter here",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Tommy Resort",
@@ -475,11 +479,12 @@ const spotsData = {
           isBreak:  false
         },
         {
-          name:     "Pick up Scooter",
+          name:     "Pick-up Scooter",
           time:     "13:00 – 15:00",
-          comment:  "Go back to the scooter and continue with it.",
+          comment:  "Go and get the Bike",
           mapsLink: "",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Israeli Bait",
@@ -1350,11 +1355,12 @@ const spotsData = {
     routes: {
       fullDay: [
         {
-          name:     "Haad Rin Beach & Beachfront resorts",
+          name:     "Park Scooter",
           time:     "1-2PM (Haad Rin)",
-          comment:  "Park here to enter the Beach",
+          comment:  "Park your Scooter here",
           mapsLink: "https://maps.app.goo.gl/PjVkpJ5FdLeDRvC3A",
-          isBreak:  false
+          isBreak:  false,
+          isScooterInfo: true
         },
         {
           name:     "Tommy Resort",
