@@ -1,10 +1,10 @@
-/* =====================================================
-   PARTY GUIDE  –  app.js (UPDATED: AUTOMATIC SKIP TELEGRAM NOTIFICATION)
+Bisschen/* =====================================================
+   PARTY GUIDE  –  app.js (UPDATED)
    =====================================================
    Reads config + data from data/spots.js (loaded first).
    Controls three views:
      1. Login screen   – password gate
-     2. Main menu      – 3 zone tiles (Trigger Auto-Group)
+     2. Main menu      – 3 zone tiles
      3. Spot list      – accordion for a region + route + Photo Proof
    Plus overlays:
      4. Route dropdown – bottom sheet
@@ -88,24 +88,12 @@ let uploadedSpotsMap = [];
 let skipReasonsMap = [];
 
 /* ─────────────────────────────────────────────────────
-   AUTOMATIC GROUP & EMOJI MAPPING
+   AUTOMATIC REGION & EMOJI MAPPING
 ───────────────────────────────────────────────────── */
 const REGION_LABELS = {
   haadRin:   "Haad Rin",
   haadYao:   "Haad Yao",
   mixedTour: "Mixed Tour"
-};
-
-const REGION_GROUPS = {
-  haadRin:   "Gruppe A",
-  haadYao:   "Gruppe B",
-  mixedTour: "Gruppe C"
-};
-
-const REGION_EMOJIS = {
-  haadRin:   "🟠🟠",
-  haadYao:   "🔵🔵",
-  mixedTour: "🔴🔴"
 };
 
 /* PERSISTENCE SYSTEM (LOCAL STORAGE)
@@ -182,9 +170,8 @@ function checkAndPromptProgress() {
       
       const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
         .find((o) => o.key === currentRoute)?.label || currentRoute;
-      const currentGroup = REGION_GROUPS[currentRegion] || "";
       
-      listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
+      listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel}`;
 
       renderList();
       showSpotList();
@@ -217,7 +204,7 @@ function checkAndPromptProgress() {
     uploadedSpotsMap = new Array(currentSpots.length).fill("open");
     skipReasonsMap = new Array(currentSpots.length).fill("");
     const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
-    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${REGION_GROUPS[currentRegion] || ""})`;
+    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel}`;
     
     saveRouteProgress();
     renderList();
@@ -243,7 +230,6 @@ function checkAndPromptProgress() {
       loginScreen.style.opacity = "0";
       setTimeout(() => { 
         loginScreen.hidden = true; 
-        // Überprüfung hier entfernt, da sie nun dynamisch beim Starten einer Route stattfindet
       }, 320);
     } else {
       loginError.hidden = false;
@@ -307,7 +293,6 @@ actionBtn.addEventListener("click", () => {
     uploadedSpotsMap = [];
     skipReasonsMap = [];
     spotList.innerHTML = "";
-    // Beim Klick auf Back löschen wir den Fortschritt nicht mehr global, sondern wechseln nur ins Hauptmenü
     showMainMenu();
   } else {
     openChat();
@@ -358,10 +343,8 @@ function loadRoute() {
   const rawData = localStorage.getItem(storageKey);
 
   if (rawData) {
-    // Falls für exakt diese Kombination ein Speicherstand existiert, Prompt anzeigen
     checkAndPromptProgress();
   } else {
-    // Falls kein Fortschritt existiert, Route normal initialisieren
     const regionData = spotsData[currentRegion];
     currentSpots = (regionData && regionData.routes[currentRoute]) || [];
     currentIndex = 0;
@@ -373,8 +356,7 @@ function loadRoute() {
     const routeLabel = (ROUTE_OPTIONS[currentRegion] || [])
       .find((o) => o.key === currentRoute)?.label || currentRoute;
     
-    const currentGroup = REGION_GROUPS[currentRegion] || "";
-    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel} (${currentGroup})`;
+    listContext.textContent = `${REGION_LABELS[currentRegion]} · ${routeLabel}`;
 
     saveRouteProgress(); 
     renderList();
@@ -405,11 +387,12 @@ function renderList() {
   }
 
   currentSpots.forEach((spot, index) => {
+    const isScooterInfo = !!spot.isScooterInfo;
     const li = document.createElement("li");
     li.className = [
       "spot-item",
-      spot.isBreak           ? "is-break"  : "",
-      index === currentIndex ? "is-active" : ""
+      (spot.isBreak || isScooterInfo) ? "is-break"  : "",
+      index === currentIndex          ? "is-active" : ""
     ].join(" ").trim();
     li.dataset.index = index;
 
@@ -425,8 +408,9 @@ function renderList() {
 
 /* ── HTML builders ───────────────────────────────── */
 function buildCollapsedHTML(spot, index) {
+  const isScooterInfo = !!spot.isScooterInfo;
   let statusIndicator = "";
-  if (spot.isBreak) {
+  if (spot.isBreak || isScooterInfo) {
     statusIndicator = "";
   } else if (uploadedSpotsMap[index] === "completed") {
     statusIndicator = " ✓";
@@ -444,7 +428,8 @@ function buildCollapsedHTML(spot, index) {
 function buildActiveHTML(spot, index) {
   const isFirst = index === 0;
   const isLast  = index === currentSpots.length - 1;
-  const hasMap  = !spot.isBreak && spot.mapsLink && !spot.mapsLink.startsWith("PLACEHOLDER");
+  const isScooterInfo = !!spot.isScooterInfo;
+  const hasMap  = !spot.isBreak && !isScooterInfo && spot.mapsLink && !spot.mapsLink.startsWith("PLACEHOLDER");
 
   const navigateBtn = hasMap ? `
     <button class="btn btn--accent btn--lg" data-action="navigate-check" data-url="${spot.mapsLink}">
@@ -457,10 +442,10 @@ function buildActiveHTML(spot, index) {
     </button>`;
 
   let photoSection = "";
-  const isSpotResolved = uploadedSpotsMap[index] === "completed" || uploadedSpotsMap[index] === "skipped" || spot.isBreak;
+  const isSpotResolved = uploadedSpotsMap[index] === "completed" || uploadedSpotsMap[index] === "skipped" || spot.isBreak || isScooterInfo;
   let isNextDisabled = !isSpotResolved;
 
-  if (spot.isBreak) {
+  if (spot.isBreak || isScooterInfo) {
     isNextDisabled = false; 
   } else {
     const isUploaded = uploadedSpotsMap[index] === "completed";
@@ -515,9 +500,7 @@ function buildActiveHTML(spot, index) {
 function countUnfinishedSpotsBefore(targetIndex) {
   let count = 0;
   for (let i = 0; i < targetIndex; i++) {
-    // Ein Spot zählt nur als unerledigt, wenn er explizit 'open' ist.
-    // 'completed' und 'skipped' werden ignoriert.
-    if (!currentSpots[i].isBreak && uploadedSpotsMap[i] === "open") {
+    if (!currentSpots[i].isBreak && !currentSpots[i].isScooterInfo && uploadedSpotsMap[i] === "open") {
       count++;
     }
   }
@@ -527,7 +510,7 @@ function countUnfinishedSpotsBefore(targetIndex) {
 /* HELPER TO FIND THE LAST COMPLETED SPOT INDEX FOR THE WARNING MESSAGE */
 function getLastCompletedSpotIndex() {
   for (let i = uploadedSpotsMap.length - 1; i >= 0; i--) {
-    if (uploadedSpotsMap[i] === "completed" && !currentSpots[i].isBreak) {
+    if (uploadedSpotsMap[i] === "completed" && !currentSpots[i].isBreak && !currentSpots[i].isScooterInfo) {
       return i;
     }
   }
@@ -572,7 +555,7 @@ function executeWithSkipWarning(targetIndex, actionCallback) {
   });
 })();
 
-/* NEW: AUTOMATIC TELEGRAM NOTIFICATION FOR SKIPPED SPOTS */
+/* AUTOMATIC TELEGRAM NOTIFICATION FOR SKIPPED SPOTS */
 async function sendSkipNotificationToTelegram(skippedIndices, targetReason) {
   if (!skippedIndices || skippedIndices.length === 0) return;
 
@@ -586,7 +569,6 @@ async function sendSkipNotificationToTelegram(skippedIndices, targetReason) {
                   `${spotName}: Skipped\n` +
                   `Reason: ${targetReason}`;
   } else {
-    // Falls mehrere übersprungen werden, wird dies für jeden Spot übersichtlich aufgelistet
     messageText = `${regionLabel}\n`;
     skippedIndices.forEach(idx => {
       const spotName = currentSpots[idx]?.name || "Unknown Spot";
@@ -616,18 +598,15 @@ let skipTargetIndex = null;
       const selectedReason = btn.dataset.reason;
       if (skipTargetIndex !== null) {
         
-        // NEW: Detect all preceding uncompleted open spots that are automatically skipped by this jump action
         const skippedIndicesBatch = [];
         for (let i = 0; i <= skipTargetIndex; i++) {
-          if (!currentSpots[i].isBreak && uploadedSpotsMap[i] === "open") {
+          if (!currentSpots[i].isBreak && !currentSpots[i].isScooterInfo && uploadedSpotsMap[i] === "open") {
             skippedIndicesBatch.push(i);
-            // Pre-fill map records for intermediate spots
             uploadedSpotsMap[i] = "skipped";
             skipReasonsMap[i] = i === skipTargetIndex ? selectedReason : "Skipped in transition";
           }
         }
 
-        // If the targeted active spot wasn't caught yet (e.g. state reset manipulation), force write it
         if (uploadedSpotsMap[skipTargetIndex] !== "skipped") {
           uploadedSpotsMap[skipTargetIndex] = "skipped";
           skipReasonsMap[skipTargetIndex] = selectedReason;
@@ -639,10 +618,8 @@ let skipTargetIndex = null;
         saveRouteProgress();
         renderList();
 
-        // NEW: Fire automatic message safely in background without blocking the UI worker
         sendSkipNotificationToTelegram(skippedIndicesBatch, selectedReason);
 
-        // Automatischer Wechsel zum nächsten Spot nach Skip
         const isLast = currentIndex === currentSpots.length - 1;
         if (isLast) {
           sendRouteFinishedNotification(currentRegion, currentRoute);
@@ -690,12 +667,14 @@ function attachListeners() {
   activeItem.querySelector("[data-action='prev']")?.addEventListener("click", () => jumpToSpot(currentIndex - 1));
   activeItem.querySelector("[data-action='next']")?.addEventListener("click", () => jumpToSpot(currentIndex + 1));
   activeItem.querySelector("[data-action='finish']")?.addEventListener("click", () => {
+    if (currentSpots[currentIndex] && currentSpots[currentIndex].isScooterInfo) {
+      uploadedSpotsMap[currentIndex] = "completed";
+    }
     sendRouteFinishedNotification(currentRegion, currentRoute);
     clearRouteProgress(); 
     showCompletion();
   });
 
-  // Intercept navigate clicks with correct non-linear check
   activeItem.querySelector("[data-action='navigate-check']")?.addEventListener("click", (e) => {
     const url = e.currentTarget.dataset.url;
     executeWithSkipWarning(currentIndex, () => {
@@ -703,14 +682,12 @@ function attachListeners() {
     });
   });
 
-  // Intercept Skip Request triggers
   activeItem.querySelector("[data-action='trigger-skip']")?.addEventListener("click", () => {
     skipTargetIndex = currentIndex;
     skipReasonBackdrop.hidden = false;
     skipReasonSheet.hidden = false;
   });
 
-  // Kamera-Button-Klick
   const cameraBtn = document.getElementById("cameraBtn");
   const cameraInput = document.getElementById("cameraInput");
 
@@ -731,8 +708,12 @@ function attachListeners() {
 
 function jumpToSpot(newIndex) {
   if (newIndex < 0 || newIndex >= currentSpots.length) return;
-  currentIndex = newIndex;
   
+  if (currentSpots[currentIndex] && currentSpots[currentIndex].isScooterInfo) {
+    uploadedSpotsMap[currentIndex] = "completed";
+  }
+
+  currentIndex = newIndex;
   photoUploadedForCurrentSpot = uploadedSpotsMap[currentIndex] === "completed"; 
   
   saveRouteProgress(); 
@@ -780,7 +761,6 @@ function processAndUploadPhoto(file, buttonElement) {
           buttonElement.textContent = "✅ Proof Photo Uploaded";
           renderList(); 
 
-          // Automatischer Wechsel zum nächsten Spot nach erfolgreichem Upload
           setTimeout(() => {
             const isLast = currentIndex === currentSpots.length - 1;
             if (isLast) {
@@ -790,7 +770,7 @@ function processAndUploadPhoto(file, buttonElement) {
             } else {
               jumpToSpot(currentIndex + 1);
             }
-          }, 600); // Kurze Verzögerung für visuelles Feedback
+          }, 600);
         } else {
           buttonElement.disabled = false;
           buttonElement.textContent = "❌ Failed. Try Again";
@@ -846,23 +826,26 @@ function showCompletion() {
    7b. AUTOMATISCHE ABSCHLUSS-MELDUNG
 ===================================================== */
 async function sendRouteFinishedNotification(regionKey, routeKey) {
-  const now = new Date();
-  const timeString = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + " Uhr";
-  const dateString = now.toLocaleDateString('de-DE');
-
-  const routeLabels = { starter: "Starter Tour", halfDay: "Half Day Tour", fullDay: "Full Day Tour" };
   const finalRegion = REGION_LABELS[regionKey] || regionKey;
-  const finalRoute = routeLabels[routeKey] || routeKey;
-  
-  const currentGroup = REGION_GROUPS[regionKey] || "Unbekannt";
-  const emojiMarker = REGION_EMOJIS[regionKey] || "⚪⚪";
 
-  const messageText = `🏁 *ROUTE ERFOLGREICH BEENDET!*\n\n` +
-                      `${emojiMarker} *Team:* ${currentGroup}\n` +
-                      `📍 *Region:* ${finalRegion}\n` +
-                      `🗺️ *Tour:* ${finalRoute}\n` +
-                      `🕒 *Uhrzeit:* ${timeString}\n` +
-                      `📅 *Datum:* ${dateString}`;
+  let skippedCount = 0;
+  let totalValidSpots = 0;
+
+  // Berechne valide Spots (Weder ScooterInfo noch Pause)
+  currentSpots.forEach((spot, index) => {
+    if (!spot.isScooterInfo && !spot.isBreak) {
+      totalValidSpots++;
+      const status = uploadedSpotsMap[index];
+      // Als übersprungen zählt jeder valide Spot, der kein Foto hat
+      if (status !== "completed") {
+        skippedCount++;
+      }
+    }
+  });
+
+  const messageText = `🏁 Tour Completed\n\n` +
+                      `Route: ${finalRegion}\n` +
+                      `Skipped Spots: ${skippedCount}/${totalValidSpots}`;
 
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
@@ -870,7 +853,7 @@ async function sendRouteFinishedNotification(regionKey, routeKey) {
     await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText, parse_mode: "Markdown" })
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText })
     });
   } catch (error) {
     console.error("Fehler beim automatischen Abschlussbericht:", error);
@@ -926,8 +909,7 @@ async function sendTelegramMessage(text) {
   
   let context = "";
   if (currentRegion) {
-    const currentGroup = REGION_GROUPS[currentRegion] || "";
-    context = `[${currentGroup} · ${REGION_LABELS[currentRegion] ?? currentRegion}${routeLabel ? " · " + routeLabel : ""}]\n`;
+    context = `[${REGION_LABELS[currentRegion] ?? currentRegion}${routeLabel ? " · " + routeLabel : ""}]\n`;
   } else {
     context = `[Main Menu]\n`;
   }
@@ -954,4 +936,4 @@ function escapeHTML(str) {
   return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-showMainMenu();
+showMainMenu(); 
