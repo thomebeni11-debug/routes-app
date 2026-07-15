@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PARTY GUIDE – MODERN & CALM PREMIUM THEME
+   ISLAND ROUTES – MODERN & CALM PREMIUM THEME
    Inspired by clean, editorial mobile interfaces.
    ========================================================================== */
 
@@ -123,75 +123,65 @@ header {
   background: var(--primary-dark-hover);
 }
 
-/* ── MAIN MENU & ZONE SELECTION ───────────────────────────────────────── */
+/* ── MAIN MENU & ZONE SELECTION (SCREEN-FILLING) ──────────────────────── */
 main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 20px 16px 24px 16px;
   max-width: 540px;
   width: 100%;
   margin: 0 auto;
 }
 
 .menu-intro {
-  margin-bottom: 28px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
 .menu-intro h2 {
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.3px;
-  margin-bottom: 6px;
 }
 
-.menu-intro p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-
+/* Flexible Grid stretching over the entire remaining screen */
 .zone-grid {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 16px;
+  min-height: 50vh; /* Ensures a generous fill even on very tall screens */
 }
 
+/* Large, clean selection buttons */
 .zone-btn {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
-  padding: 24px;
-  text-align: left;
+  flex: 1; /* Automatically distributes space evenly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  padding: 24px;
 }
 
 .zone-btn:hover, .zone-btn:active {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
   border-color: var(--text-muted);
 }
 
-.zone-emoji {
-  font-size: 1.4rem;
-  margin-bottom: 2px;
-}
-
 .zone-btn h3 {
-  font-size: 1.15rem;
+  font-size: 1.4rem; /* Prominent and clean sizing */
   font-weight: 700;
   color: var(--text-main);
-}
-
-.zone-btn p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  letter-spacing: -0.2px;
 }
 
 /* ── SPOT LIST CONTEXT & ACCORDION ────────────────────────────────────── */
