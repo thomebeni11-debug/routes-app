@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Party Guide</title>
+  <title>Island Routes</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <div class="login-backdrop" id="loginScreen">
     <div class="login-card">
       <p class="logo">●</p>
-      <h2>Party Guide</h2>
+      <h2>Island Routes</h2>
       <p>Please enter your access password below</p>
       <div class="login-field-wrap">
         <input
@@ -88,8 +88,9 @@
   <!-- HEADER NAVIGATION -->
   <header>
     <div class="logo-group">
-      <h1>Party Guide</h1>
-      <span id="headerSubtitle">Your Adventure</span>
+      <h1>Island Routes</h1>
+      <!-- Hidden subtitle to preserve app.js functionality without crashing -->
+      <span id="headerSubtitle" style="display: none !important;"></span>
     </div>
     <button class="btn-header" id="actionBtn">Chat</button>
   </header>
