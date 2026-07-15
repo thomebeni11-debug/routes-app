@@ -8,16 +8,18 @@
 </head>
 <body>
 
-  <div class="login-screen" id="loginScreen">
+  <!-- PASSWORD GATE (LOGIN SCREEN) -->
+  <div class="login-backdrop" id="loginScreen">
     <div class="login-card">
-      <p class="login-logo">●</p>
-      <p class="login-subtitle">Party Guide</p>
+      <p class="logo">●</p>
+      <h2>Party Guide</h2>
+      <p>Please enter your access password below</p>
       <div class="login-field-wrap">
         <input
-          class="login-input"
+          class="input-field"
           id="passwordInput"
           type="password"
-          placeholder="Enter password"
+          placeholder="••••"
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
@@ -25,118 +27,149 @@
         />
       </div>
 
-      <p class="login-error" id="loginError" hidden>Incorrect password. Try again.</p>
-      <button class="btn btn--accent btn--lg" id="verifyBtn">Verify</button>
+      <p class="error-text" id="loginError" hidden>Incorrect password. Try again.</p>
+      <button class="btn btn--camera" id="verifyBtn">Verify</button>
     </div>
   </div>
 
   <!-- ROUTE RESTORE DIALOGS -->
-  <div class="dropdown-backdrop" id="restoreBackdrop" hidden></div>
-  <div class="dropdown-sheet" id="restoreSheet" hidden>
-    <p class="dropdown-label">Route Progress Found</p>
-    <div class="chat-confirm" style="padding: 0;">
-      <p class="chat-confirm-body" style="margin-bottom: var(--space-m);">
-        A previous route progress was found. Would you like to continue from where you left off?
-      </p>
-      <button class="btn btn--accent btn--lg" id="restoreContinueBtn" style="margin-bottom: var(--space-s);">Continue Route</button>
-      <button class="btn btn--ghost btn--lg" id="restoreRestartBtn">Restart Route</button>
+  <div class="sheet-backdrop" id="restoreBackdrop" hidden>
+    <div class="sheet-container" id="restoreSheet" hidden>
+      <p class="list-context-bar">Route Progress Found</p>
+      <h3>Continue from last session?</h3>
+      <p>A previous route progress was found. Would you like to continue from where you left off?</p>
+      <div class="dropdown-grid">
+        <button class="btn btn--camera" id="restoreContinueBtn" style="margin-bottom: 4px;">Continue Route</button>
+        <button class="btn btn--ghost" id="restoreRestartBtn">Restart Route</button>
+      </div>
     </div>
   </div>
 
-  <div class="dropdown-backdrop" id="confirmRestartBackdrop" hidden></div>
-  <div class="dropdown-sheet" id="confirmRestartSheet" hidden>
-    <p class="dropdown-label" style="color: #ff6b6b;">Are you sure?</p>
-    <div class="chat-confirm" style="padding: 0;">
-      <p class="chat-confirm-body" style="margin-bottom: var(--space-m);">
-        Your current route progress will be permanently deleted and cannot be restored.
-      </p>
-      <button class="btn btn--finish btn--lg" id="finalRestartBtn" style="background: #ff0033; border-color: #ff0033; box-shadow: 0 4px 0 #cc0029; margin-bottom: var(--space-s);">Yes, Restart Route</button>
-      <button class="btn btn--muted btn--lg" id="cancelRestartBtn">Cancel</button>
+  <!-- CONFIRM RESTART DIALOG -->
+  <div class="sheet-backdrop" id="confirmRestartBackdrop" hidden>
+    <div class="sheet-container" id="confirmRestartSheet" hidden>
+      <p class="list-context-bar" style="color: #803D3D;">Are you sure?</p>
+      <h3>Reset all progress?</h3>
+      <p>Your current route progress will be permanently deleted and cannot be restored.</p>
+      <div class="dropdown-grid">
+        <button class="btn btn--finish" id="finalRestartBtn" style="background: #803D3D; margin-bottom: 4px;">Yes, Restart Route</button>
+        <button class="btn btn--muted" id="cancelRestartBtn">Cancel</button>
+      </div>
     </div>
   </div>
 
   <!-- FLEXIBLE NAVIGATION SKIP WARNING DIALOG -->
-  <div class="dropdown-backdrop" id="skipWarningBackdrop" hidden></div>
-  <div class="dropdown-sheet" id="skipWarningSheet" hidden>
-    <p class="dropdown-label" style="color: #ff9f43;">⚠️ Unfinished Spots Ahead</p>
-    <div class="chat-confirm" style="padding: 0;">
-      <p class="chat-confirm-body" id="skipWarningMessage" style="margin-bottom: var(--space-m);">
-        You are currently at Spot X. There are still Y unfinished spots before this location. Do you want to continue anyway?
-      </p>
-      <button class="btn btn--accent btn--lg" id="skipContinueBtn" style="margin-bottom: var(--space-s);">Continue anyway</button>
-      <button class="btn btn--ghost btn--lg" id="skipCancelBtn">Cancel</button>
+  <div class="sheet-backdrop" id="skipWarningBackdrop" hidden>
+    <div class="sheet-container" id="skipWarningSheet" hidden>
+      <p class="list-context-bar" style="color: #B25A3D;">⚠️ Unfinished Spots Ahead</p>
+      <h3>Skip previous locations?</h3>
+      <p id="skipWarningMessage">You are currently at Spot X. There are still Y unfinished spots before this location. Do you want to continue anyway?</p>
+      <div class="dropdown-grid">
+        <button class="btn btn--camera" id="skipContinueBtn" style="margin-bottom: 4px;">Continue anyway</button>
+        <button class="btn btn--ghost" id="skipCancelBtn">Cancel</button>
+      </div>
     </div>
   </div>
 
-  <!-- NEW: SKIP REASON SELECTION DIALOG -->
-  <div class="dropdown-backdrop" id="skipReasonBackdrop" hidden></div>
-  <div class="dropdown-sheet" id="skipReasonSheet" hidden>
-    <p class="dropdown-label">Why are you skipping this spot?</p>
-    <div class="dropdown-grid" style="display: flex; flex-direction: column; gap: var(--space-s); padding-bottom: var(--space-m);">
-      <button class="btn btn--muted btn--lg" data-reason="I don't have enough time">I don't have enough time</button>
-      <button class="btn btn--muted btn--lg" data-reason="The spot is closed">The spot is closed</button>
-      <button class="btn btn--muted btn--lg" data-reason="Other reason">Other reason</button>
-      <button class="btn btn--ghost btn--lg" id="skipReasonCancelBtn" style="margin-top: var(--space-xs);">Cancel</button>
+  <!-- SKIP REASON SELECTION DIALOG -->
+  <div class="sheet-backdrop" id="skipReasonBackdrop" hidden>
+    <div class="sheet-container" id="skipReasonSheet" hidden>
+      <p class="list-context-bar">Skip Spot</p>
+      <h3>Why are you skipping this spot?</h3>
+      <div class="dropdown-grid" style="margin-bottom: 16px;">
+        <button class="btn-reason" data-reason="I don't have enough time">I don't have enough time</button>
+        <button class="btn-reason" data-reason="The spot is closed">The spot is closed</button>
+        <button class="btn-reason" data-reason="Other reason">Other reason</button>
+      </div>
+      <button class="btn btn--ghost" id="skipReasonCancelBtn">Cancel</button>
     </div>
   </div>
-  <!-- END OF NEW DIALOGS -->
 
-  <header class="topbar">
-    <button class="action-btn" id="actionBtn">Chat</button>
-    <h1 class="logo">Party Guide</h1>
-    <span class="spacer"></span>
+  <!-- HEADER NAVIGATION -->
+  <header>
+    <div class="logo-group">
+      <h1>Party Guide</h1>
+      <span id="headerSubtitle">Your Adventure</span>
+    </div>
+    <button class="btn-header" id="actionBtn">Chat</button>
   </header>
 
+  <!-- MAIN MENU & ZONE SELECTION -->
   <main class="main-menu" id="mainMenu">
-    <button class="zone-btn" data-region="haadRin">Haad Rin</button>
-    <button class="zone-btn" data-region="haadYao">Haad Yao</button>
-    <button class="zone-btn" data-region="mixedTour">Mixed Tour</button>
+    <div class="menu-intro">
+      <h2>Where to next?</h2>
+      <p>Select a region to view your curated route itinerary</p>
+    </div>
+    <div class="zone-grid">
+      <button class="zone-btn" data-region="haadRin">
+        <span class="zone-emoji">🌅</span>
+        <h3>Haad Rin</h3>
+        <p>Explore the vibrant south coast spots</p>
+      </button>
+      <button class="zone-btn" data-region="haadYao">
+        <span class="zone-emoji">🌴</span>
+        <h3>Haad Yao</h3>
+        <p>Relaxed bays and crystal clear waters</p>
+      </button>
+      <button class="zone-btn" data-region="mixedTour">
+        <span class="zone-emoji">🗺️</span>
+        <h3>Mixed Tour</h3>
+        <p>A handpicked selection of premium highlights</p>
+      </button>
+    </div>
   </main>
 
-  <div class="dropdown-backdrop" id="dropdownBackdrop" hidden></div>
-
-  <div class="dropdown-sheet" id="dropdownSheet" hidden>
-    <p class="dropdown-label" id="dropdownLabel">Select your route</p>
-    <div class="dropdown-grid" id="dropdownGrid">
-      </div>
-  </div>
-
-  <div class="dropdown-backdrop" id="chatBackdrop" hidden></div>
-
-  <div class="dropdown-sheet" id="chatSheet" hidden>
-    <div class="chat-header">
-      <p class="dropdown-label">Send a message</p>
-      <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close chat">✕</button>
-    </div>
-
-    <div id="chatInputState">
-      <textarea
-        class="chat-textarea"
-        id="chatTextarea"
-        placeholder="Type your message here…"
-        rows="4"
-        autocorrect="off"
-        spellcheck="false"
-      ></textarea>
-      <p class="chat-hint">Your message goes directly to the team.</p>
-      <button class="btn btn--accent btn--lg" id="chatSendBtn">Send Message</button>
-    </div>
-
-    <div id="chatConfirmState" hidden>
-      <div class="chat-confirm">
-        <p class="chat-confirm-icon">✅</p>
-        <p class="chat-confirm-title">Message sent!</p>
-        <p class="chat-confirm-body">
-          Your message has been received. There may be a short delay before you get a reply — thanks for your patience.
-        </p>
-        <button class="btn btn--accent btn--lg" id="chatSendAnotherBtn">Send Another</button>
-        <button class="btn btn--ghost btn--lg" id="chatDoneBtn">Close</button>
+  <!-- ROUTE DROPDOWN DIALOG -->
+  <div class="sheet-backdrop" id="dropdownBackdrop" hidden>
+    <div class="sheet-container" id="dropdownSheet" hidden>
+      <p class="list-context-bar" id="dropdownLabel">Select your route</p>
+      <h3>Available Routes</h3>
+      <p>Choose a specific itinerary for this region to get started.</p>
+      <div class="dropdown-grid" id="dropdownGrid">
+        <!-- Dynamically filled by app.js -->
       </div>
     </div>
   </div>
 
+  <!-- CHAT SHEET OVERLAY -->
+  <div class="sheet-backdrop" id="chatBackdrop" hidden>
+    <div class="sheet-container" id="chatSheet" hidden>
+      <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="margin-bottom: 0;">Send a message</h3>
+        <button class="btn-header" id="chatCloseBtn" aria-label="Close chat" style="background: transparent; padding: 4px 8px; font-size: 1.1rem;">✕</button>
+      </div>
+
+      <div id="chatInputState">
+        <p class="chat-hint" style="margin-bottom: 16px;">Have questions or need assistance? Write directly to our support team.</p>
+        <textarea
+          class="chat-textarea"
+          id="chatTextarea"
+          placeholder="Type your message here…"
+          autocorrect="off"
+          spellcheck="false"
+        ></textarea>
+        <button class="btn btn--camera" id="chatSendBtn">Send Message</button>
+      </div>
+
+      <div id="chatConfirmState" hidden>
+        <div class="completion-card" style="padding: 20px 0;">
+          <h2>✅</h2>
+          <h3>Message sent!</h3>
+          <p style="margin-top: 8px; margin-bottom: 24px;">
+            Your message has been received. There may be a short delay before you get a reply — thanks for your patience.
+          </p>
+          <div class="dropdown-grid">
+            <button class="btn btn--camera" id="chatSendAnotherBtn" style="margin-bottom: 4px;">Send Another</button>
+            <button class="btn btn--ghost" id="chatDoneBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPOT LIST CONTEXT -->
   <div class="spot-list-wrapper" id="spotListWrapper" hidden>
-    <p class="list-context" id="listContext"></p>
+    <p class="list-context-bar" id="listContext"></p>
     <ul class="spot-list" id="spotList"></ul>
   </div>
 
