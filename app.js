@@ -576,36 +576,24 @@ function executeWithSkipWarning(targetIndex, actionCallback) {
 async function sendSkipNotificationToTelegram(skippedIndices, targetReason) {
   if (!skippedIndices || skippedIndices.length === 0) return;
 
-  const emojiMarker = REGION_EMOJIS[currentRegion] || "⚪⚪";
-  const currentGroup = REGION_GROUPS[currentRegion] || "Unknown Team";
-  const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
-  
-  const lastCompletedIdx = getLastCompletedSpotIndex();
-  const locationString = lastCompletedIdx !== -1 ? `Spot ${lastCompletedIdx + 1}` : "None (Route Start)";
-
+  const regionLabel = REGION_LABELS[currentRegion] || currentRegion;
   let messageText = "";
 
   if (skippedIndices.length === 1) {
-    // Single Spot Skip Mode
     const singleIdx = skippedIndices[0];
     const spotName = currentSpots[singleIdx]?.name || "Unknown Spot";
-    messageText = `${emojiMarker} *[${currentGroup.toUpperCase()}] skipped Spot ${singleIdx + 1} - ${spotName}.*\n` +
-                  `*Reason:* ${targetReason}\n` +
-                  `*Last Completed Position:* ${locationString}\n` +
-                  `*Route:* ${REGION_LABELS[currentRegion]} [${routeLabel}]`;
+    messageText = `${regionLabel}\n` +
+                  `${spotName}: Skipped\n` +
+                  `Reason: ${targetReason}`;
   } else {
-    // Batch Skip Mode (Multiple spots skipped sequentially)
-    const continuedSpotDisplay = currentIndex + 1;
-    messageText = `${emojiMarker} *[${currentGroup.toUpperCase()}] skipped ${skippedIndices.length} spots and continued at Spot ${continuedSpotDisplay}.*\n` +
-                  `*Last Completed Position:* ${locationString}\n` +
-                  `*Route:* ${REGION_LABELS[currentRegion]} [${routeLabel}]\n\n` +
-                  `*Details of skipped locations:*\n`;
-                  
+    // Falls mehrere übersprungen werden, wird dies für jeden Spot übersichtlich aufgelistet
+    messageText = `${regionLabel}\n`;
     skippedIndices.forEach(idx => {
       const spotName = currentSpots[idx]?.name || "Unknown Spot";
       const reasonText = idx === currentIndex ? targetReason : (skipReasonsMap[idx] || "Skipped in transition");
-      messageText += `• *Spot ${idx + 1}* – ${spotName}: _${reasonText}_\n`;
+      messageText += `${spotName}: Skipped\nReason: ${reasonText}\n\n`;
     });
+    messageText = messageText.trim();
   }
 
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -613,7 +601,7 @@ async function sendSkipNotificationToTelegram(skippedIndices, targetReason) {
     await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText, parse_mode: "Markdown" })
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: messageText })
     });
   } catch (error) {
     console.error("Error sending skip notification to Telegram:", error);
@@ -653,6 +641,16 @@ let skipTargetIndex = null;
 
         // NEW: Fire automatic message safely in background without blocking the UI worker
         sendSkipNotificationToTelegram(skippedIndicesBatch, selectedReason);
+
+        // Automatischer Wechsel zum nächsten Spot nach Skip
+        const isLast = currentIndex === currentSpots.length - 1;
+        if (isLast) {
+          sendRouteFinishedNotification(currentRegion, currentRoute);
+          clearRouteProgress(); 
+          showCompletion();
+        } else {
+          jumpToSpot(currentIndex + 1);
+        }
       }
       
       skipReasonBackdrop.hidden = true;
@@ -781,6 +779,18 @@ function processAndUploadPhoto(file, buttonElement) {
           buttonElement.className = "btn btn--camera has-photo";
           buttonElement.textContent = "✅ Proof Photo Uploaded";
           renderList(); 
+
+          // Automatischer Wechsel zum nächsten Spot nach erfolgreichem Upload
+          setTimeout(() => {
+            const isLast = currentIndex === currentSpots.length - 1;
+            if (isLast) {
+              sendRouteFinishedNotification(currentRegion, currentRoute);
+              clearRouteProgress(); 
+              showCompletion();
+            } else {
+              jumpToSpot(currentIndex + 1);
+            }
+          }, 600); // Kurze Verzögerung für visuelles Feedback
         } else {
           buttonElement.disabled = false;
           buttonElement.textContent = "❌ Failed. Try Again";
@@ -792,25 +802,17 @@ function processAndUploadPhoto(file, buttonElement) {
 }
 
 async function sendPhotoToTelegram(imageBlob) {
-  const now = new Date();
-  const timeString = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + " Uhr";
-  
-  const routeLabel = (ROUTE_OPTIONS[currentRegion] || []).find((o) => o.key === currentRoute)?.label || currentRoute;
   const spot = currentSpots[currentIndex];
+  const regionLabel = REGION_LABELS[currentRegion] || currentRegion;
   
-  const currentGroup = REGION_GROUPS[currentRegion] || "Unbekannt";
-  const emojiMarker = REGION_EMOJIS[currentRegion] || "⚪⚪";
-  
-  const captionText = `${emojiMarker} *[${currentGroup.toUpperCase()}] - ${REGION_LABELS[currentRegion]} [${routeLabel}]* ${emojiMarker}\n\n` +
-                      `📍 *Spot ${currentIndex + 1}:* ${spot.name}\n` +
-                      `🕒 *Zeitstempel:* ${timeString}`;
+  const captionText = `Route: ${regionLabel}\n` +
+                      `Spot: ${spot.name}`;
 
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
   const formData = new FormData();
   formData.append("chat_id", TELEGRAM_CHAT_ID);
   formData.append("photo", imageBlob, "proof.jpg");
   formData.append("caption", captionText);
-  formData.append("parse_mode", "Markdown");
 
   try {
     const res = await fetch(url, { method: "POST", body: formData });
